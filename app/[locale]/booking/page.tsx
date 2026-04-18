@@ -20,7 +20,7 @@ export default async function BookingPage({ params }: BookingPageProps) {
           <iframe
             src={bookingUrl}
             title="Booking portal"
-            className="h-[900px] w-full bg-surface"
+            className="h-[min(100dvh,56rem)] min-h-[32rem] w-full bg-surface sm:min-h-[40rem] lg:h-[900px] lg:min-h-0"
             loading="lazy"
           />
         </div>

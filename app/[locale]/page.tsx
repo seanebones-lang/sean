@@ -23,7 +23,7 @@ export default async function HomePage({ params }: HomePageProps) {
   };
 
   return (
-    <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
+    <div className="mx-auto w-full max-w-6xl min-w-0 px-3 min-[480px]:px-4 sm:px-6">
       <Hero
         eyebrow={t("eyebrow")}
         headline={t("headline")}
@@ -33,7 +33,7 @@ export default async function HomePage({ params }: HomePageProps) {
         stats={[t("statsA"), t("statsB"), t("statsC")]}
       />
 
-      <section className="grid gap-4 pb-12 md:grid-cols-3">
+      <section className="grid min-w-0 gap-4 pb-10 min-[480px]:pb-12 md:grid-cols-3">
         {[
           {
             title: "Black and Grey Specialty",

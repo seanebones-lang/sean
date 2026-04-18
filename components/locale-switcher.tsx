@@ -16,13 +16,13 @@ export function LocaleSwitcher() {
   };
 
   return (
-    <label className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
-      {t("localeLabel")}
+    <label className="inline-flex max-w-full items-center gap-1.5 text-[10px] uppercase tracking-[0.14em] text-muted-foreground min-[400px]:gap-2 min-[400px]:text-xs min-[400px]:tracking-[0.18em]">
+      <span className="hidden min-[420px]:inline">{t("localeLabel")}</span>
       <select
         aria-label={t("localeLabel")}
         value={locale}
         onChange={onLocaleChange}
-        className="rounded-md border border-border bg-surface px-2 py-1 text-foreground outline-none focus:border-electric"
+        className="min-h-9 min-w-[3.25rem] max-w-full touch-manipulation rounded-md border border-border bg-surface px-1.5 py-1.5 text-sm text-foreground outline-none focus:border-electric min-[400px]:px-2 min-[400px]:text-base"
       >
         {routing.locales.map((item) => (
           <option key={item} value={item}>

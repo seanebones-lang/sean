@@ -12,7 +12,7 @@ export function ContactForm() {
   const [state, action, pending] = useActionState(submitContact, initialState);
 
   return (
-    <form action={action} className="section-card grid gap-4 rounded-xl p-6">
+    <form action={action} className="section-card grid gap-4 rounded-xl p-4 min-[480px]:p-6">
       <div className="grid gap-2">
         <label htmlFor="name" className="text-sm text-muted-foreground">
           Name
@@ -21,7 +21,7 @@ export function ContactForm() {
           id="name"
           name="name"
           required
-          className="rounded-lg border border-border bg-black/30 px-3 py-2 outline-none focus:border-electric"
+          className="min-h-11 rounded-lg border border-border bg-black/30 px-3 py-2 text-base outline-none focus:border-electric"
         />
       </div>
 
@@ -34,7 +34,7 @@ export function ContactForm() {
           name="email"
           type="email"
           required
-          className="rounded-lg border border-border bg-black/30 px-3 py-2 outline-none focus:border-electric"
+          className="min-h-11 rounded-lg border border-border bg-black/30 px-3 py-2 text-base outline-none focus:border-electric"
         />
       </div>
 
@@ -53,14 +53,14 @@ export function ContactForm() {
           required
           minLength={20}
           rows={6}
-          className="rounded-lg border border-border bg-black/30 px-3 py-2 outline-none focus:border-electric"
+          className="min-h-[10rem] rounded-lg border border-border bg-black/30 px-3 py-2 text-base outline-none focus:border-electric"
         />
       </div>
 
       <button
         type="submit"
         disabled={pending}
-        className="electric-ring rounded-full border border-electric px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] disabled:opacity-70"
+        className="electric-ring min-h-12 touch-manipulation rounded-full border border-electric px-5 py-3 text-xs font-semibold uppercase tracking-[0.15em] disabled:opacity-70"
       >
         {pending ? "Sending..." : "Send Request"}
       </button>

@@ -6,7 +6,7 @@ export function SiteFooter() {
 
   return (
     <footer className="border-t border-border">
-      <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 px-4 py-10 sm:px-6 md:flex-row md:items-center md:justify-between">
+      <div className="mx-auto flex w-full max-w-6xl min-w-0 flex-col gap-6 px-3 py-8 min-[480px]:px-4 sm:px-6 sm:py-10 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="section-title text-xl text-foreground">Cody Meneley</p>
           <p className="mt-1 text-sm text-muted-foreground">
@@ -14,12 +14,12 @@ export function SiteFooter() {
           </p>
         </div>
 
-        <div className="flex gap-4 text-sm">
+        <div className="flex flex-wrap gap-2 text-sm min-[480px]:gap-4">
           <a
             href={siteConfig.instagram}
             target="_blank"
             rel="noreferrer"
-            className="text-muted-foreground hover:text-electric"
+            className="inline-flex min-h-11 touch-manipulation items-center rounded-lg px-2 text-muted-foreground hover:bg-surface hover:text-electric min-[480px]:px-1"
           >
             {t("instagram")}
           </a>
@@ -27,7 +27,7 @@ export function SiteFooter() {
             href={siteConfig.facebook}
             target="_blank"
             rel="noreferrer"
-            className="text-muted-foreground hover:text-electric"
+            className="inline-flex min-h-11 touch-manipulation items-center rounded-lg px-2 text-muted-foreground hover:bg-surface hover:text-electric min-[480px]:px-1"
           >
             {t("facebook")}
           </a>

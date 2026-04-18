@@ -36,6 +36,8 @@
     "localeLabel": "Language",
     "bookNow": "Book Now",
     "instagram": "Instagram",
-    "facebook": "Facebook"
+    "facebook": "Facebook",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   }
 }

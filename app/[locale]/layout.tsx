@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages, getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
@@ -15,6 +15,13 @@ type LocaleLayoutProps = {
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#050607",
+};
 
 export async function generateMetadata({
   params,
@@ -47,7 +54,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
 
   return (
     <html lang={locale}>
-      <body className="layout-shell min-h-screen bg-background text-foreground">
+      <body className="layout-shell min-h-screen bg-background pb-[env(safe-area-inset-bottom)] text-foreground">
         <NextIntlClientProvider messages={messages}>
           <SiteHeader />
           <main>{children}</main>

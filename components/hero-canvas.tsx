@@ -44,8 +44,12 @@ function Swarm() {
 
 export function HeroCanvas() {
   return (
-    <div className="h-[320px] w-full rounded-2xl border border-border bg-gradient-to-b from-surface/80 to-black">
-      <Canvas camera={{ position: [0, 0, 4], fov: 55 }}>
+    <div className="relative h-[min(42dvh,20rem)] w-full min-h-[200px] touch-none rounded-2xl border border-border bg-gradient-to-b from-surface/80 to-black min-[480px]:h-[min(44dvh,22rem)] md:h-[320px] md:min-h-[320px]">
+      <Canvas
+        className="h-full w-full"
+        dpr={[1, 2]}
+        camera={{ position: [0, 0, 4], fov: 55 }}
+      >
         <ambientLight intensity={0.35} />
         <pointLight position={[2, 2, 3]} intensity={10} color="#21c7ff" />
         <Swarm />
