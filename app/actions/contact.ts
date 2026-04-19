@@ -2,6 +2,7 @@
 
 import { Resend } from "resend";
 import { z } from "zod";
+import { headers } from "next/headers";
 import { siteConfig } from "@/lib/site";
 
 export type ContactActionState = {
@@ -14,7 +15,30 @@ const schema = z.object({
   email: z.string().email(),
   idea: z.string().min(20),
   website: z.string().optional(),
+  placement: z.string().optional(),
+  size: z.string().optional(),
+  colorPreference: z.string().optional(),
+  budget: z.string().optional(),
+  timeline: z.string().optional(),
+  firstTattoo: z.string().optional(),
+  coverUp: z.string().optional(),
+  ageConfirm: z.string(),
 });
+
+// Simple in-memory rate limit: max 3 submissions per IP per hour.
+const rateMap = new Map<string, { count: number; resetAt: number }>();
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateMap.set(ip, { count: 1, resetAt: now + 60 * 60 * 1000 });
+    return true;
+  }
+  if (entry.count >= 3) return false;
+  entry.count++;
+  return true;
+}
 
 export async function submitContact(
   _prevState: ContactActionState,
@@ -25,6 +49,14 @@ export async function submitContact(
     email: formData.get("email"),
     idea: formData.get("idea"),
     website: formData.get("website"),
+    placement: formData.get("placement"),
+    size: formData.get("size"),
+    colorPreference: formData.get("colorPreference"),
+    budget: formData.get("budget"),
+    timeline: formData.get("timeline"),
+    firstTattoo: formData.get("firstTattoo"),
+    coverUp: formData.get("coverUp"),
+    ageConfirm: formData.get("ageConfirm") ?? "",
   });
 
   if (!parsed.success) {
@@ -33,6 +65,24 @@ export async function submitContact(
 
   if (parsed.data.website) {
     return { success: true, message: "Thanks, message received." };
+  }
+
+  if (!parsed.data.ageConfirm) {
+    return { success: false, message: "You must confirm you are 18 or older." };
+  }
+
+  // Rate limiting
+  const hdrs = await headers();
+  const ip =
+    hdrs.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    hdrs.get("x-real-ip") ??
+    "unknown";
+
+  if (!checkRateLimit(ip)) {
+    return {
+      success: false,
+      message: "Too many requests. Please wait a while before sending another message.",
+    };
   }
 
   const apiKey = process.env.RESEND_API_KEY;
@@ -44,6 +94,25 @@ export async function submitContact(
     };
   }
 
+  const d = parsed.data;
+
+  const lines = [
+    `Name: ${d.name}`,
+    `Email: ${d.email}`,
+    ``,
+    `Tattoo Concept:`,
+    d.idea,
+    ``,
+    `Placement: ${d.placement || "Not specified"}`,
+    `Size: ${d.size || "Not specified"}`,
+    `Color preference: ${d.colorPreference || "Not specified"}`,
+    `Budget: ${d.budget || "Not specified"}`,
+    `Timeline: ${d.timeline || "Not specified"}`,
+    ``,
+    `First tattoo: ${d.firstTattoo === "yes" ? "Yes" : "No"}`,
+    `Cover-up / rework: ${d.coverUp === "yes" ? "Yes" : "No"}`,
+  ];
+
   const resend = new Resend(apiKey);
   const from = process.env.RESEND_FROM_EMAIL ?? "Tattoo Site <onboarding@resend.dev>";
 
@@ -51,9 +120,9 @@ export async function submitContact(
     await resend.emails.send({
       from,
       to: siteConfig.email,
-      replyTo: parsed.data.email,
-      subject: `New consultation request from ${parsed.data.name}`,
-      text: `Name: ${parsed.data.name}\nEmail: ${parsed.data.email}\n\nIdea:\n${parsed.data.idea}`,
+      replyTo: d.email,
+      subject: `New consultation request from ${d.name}`,
+      text: lines.join("\n"),
     });
   } catch {
     return {

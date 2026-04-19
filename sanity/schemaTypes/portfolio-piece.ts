@@ -23,5 +23,18 @@ export const portfolioPieceType = defineType({
       of: [{ type: "image", options: { hotspot: true } }],
       validation: (rule) => rule.min(1),
     }),
+    defineField({
+      name: "healedImage",
+      title: "Healed Image",
+      type: "image",
+      options: { hotspot: true },
+      description: "Optional healed / settled photo for before-after comparison.",
+    }),
+    defineField({
+      name: "publishedAt",
+      title: "Published At",
+      type: "datetime",
+      initialValue: () => new Date().toISOString(),
+    }),
   ],
 });
