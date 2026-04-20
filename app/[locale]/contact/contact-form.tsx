@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
+import { track } from "@vercel/analytics";
 import { submitContact } from "@/app/actions/contact";
 
 const initialState = { success: false, message: "" };
@@ -46,6 +47,10 @@ const selectClass =
 
 export function ContactForm() {
   const [state, action, pending] = useActionState(submitContact, initialState);
+
+  useEffect(() => {
+    if (state.success) track("contact_form_submitted");
+  }, [state.success]);
 
   return (
     <form action={action} className="section-card grid gap-5 rounded-xl p-4 min-[480px]:p-6">
@@ -161,6 +166,21 @@ export function ContactForm() {
             <option value="flexible">Flexible / no rush</option>
           </select>
         </div>
+      </div>
+
+      {/* Referral code */}
+      <div>
+        <label htmlFor="referralCode" className={labelClass}>
+          Referral code <span className="text-xs">(optional)</span>
+        </label>
+        <input
+          id="referralCode"
+          name="referralCode"
+          maxLength={40}
+          autoComplete="off"
+          placeholder="Friend's name or code"
+          className={inputClass}
+        />
       </div>
 
       {/* Checkboxes */}

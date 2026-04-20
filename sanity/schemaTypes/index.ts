@@ -1,5 +1,6 @@
 import { aftercarePageType } from "./aftercare-page";
 import { artistType } from "./artist";
+import { blogPostType } from "./blog-post";
 import { faqItemType } from "./faq-item";
 import { policyPageType } from "./policy-page";
 import { portfolioPieceType } from "./portfolio-piece";
@@ -16,4 +17,5 @@ export const schemaTypes = [
   faqItemType,
   policyPageType,
   aftercarePageType,
+  blogPostType,
 ];

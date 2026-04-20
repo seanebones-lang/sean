@@ -60,5 +60,48 @@ export const siteSettingsType = defineType({
       rows: 4,
       description: "Freeform display of hours, e.g. 'Tue-Sat 12pm-8pm / By appointment only'.",
     }),
+    defineField({
+      name: "instagramFeed",
+      title: "Instagram Feed (manual)",
+      description:
+        "Up to 8 recent posts to surface on the site. Add an image, the IG post URL, and an optional caption.",
+      type: "array",
+      of: [
+        {
+          type: "object",
+          fields: [
+            defineField({
+              name: "image",
+              title: "Image",
+              type: "image",
+              options: { hotspot: true },
+              validation: (rule) => rule.required(),
+            }),
+            defineField({
+              name: "url",
+              title: "Instagram Post URL",
+              type: "url",
+              validation: (rule) => rule.required(),
+            }),
+            defineField({ name: "caption", title: "Caption (optional)", type: "string" }),
+          ],
+          preview: { select: { title: "caption", media: "image" } },
+        },
+      ],
+      validation: (rule) => rule.max(8),
+    }),
+    defineField({
+      name: "heroVideoUrl",
+      title: "Hero Video URL (optional)",
+      type: "url",
+      description: "MP4 URL for the hero background loop. Keep under 2MB; muted autoplay is assumed.",
+    }),
+    defineField({
+      name: "heroVideoPoster",
+      title: "Hero Video Poster",
+      type: "image",
+      options: { hotspot: true },
+      description: "Image shown before the video loads, and when autoplay is blocked.",
+    }),
   ],
 });

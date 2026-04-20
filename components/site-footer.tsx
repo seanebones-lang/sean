@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/lib/site";
 import { getSiteSettings } from "@/lib/sanity/site-settings";
+import { NewsletterForm } from "@/components/newsletter-form";
 
 const STATUS_CONFIG = {
   open: { label: "Booking open", dot: "bg-emerald-400" },
@@ -27,7 +28,7 @@ export async function SiteFooter() {
 
   return (
     <footer className="border-t border-border">
-      <div className="mx-auto flex w-full max-w-6xl min-w-0 flex-col gap-8 px-3 py-8 min-[480px]:px-4 sm:px-6 sm:py-10 lg:grid lg:grid-cols-4 lg:gap-10">
+      <div className="mx-auto flex w-full max-w-6xl min-w-0 flex-col gap-8 px-3 py-8 min-[480px]:px-4 sm:px-6 sm:py-10 lg:grid lg:grid-cols-5 lg:gap-10">
         <div className="lg:col-span-2">
           <p className="section-title text-xl text-foreground">
             {settings?.siteName?.trim() || siteConfig.name}
@@ -68,6 +69,10 @@ export async function SiteFooter() {
               </div>
             ) : null}
           </dl>
+        </div>
+
+        <div className="lg:col-span-1">
+          <NewsletterForm />
         </div>
 
         <div className="flex flex-wrap gap-2 text-sm lg:flex-col lg:items-start lg:gap-1">

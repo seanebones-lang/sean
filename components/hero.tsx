@@ -11,6 +11,8 @@ type HeroProps = {
   ctaBooking: string;
   ctaPortfolio: string;
   stats: string[];
+  videoUrl?: string | null;
+  videoPoster?: string | null;
 };
 
 export function Hero({
@@ -20,6 +22,8 @@ export function Hero({
   ctaBooking,
   ctaPortfolio,
   stats,
+  videoUrl,
+  videoPoster,
 }: HeroProps) {
   const reduced = useReducedMotion();
 
@@ -79,14 +83,28 @@ export function Hero({
             className="pointer-events-none absolute inset-0 z-[1] rounded-2xl bg-[radial-gradient(ellipse_at_60%_40%,#21c7ff14_0%,transparent_70%)]"
             aria-hidden
           />
-          <Image
-            src="/sean-hero.jpg"
-            alt="Sean E. Bones"
-            fill
-            priority
-            sizes="(max-width: 768px) 100vw, 40vw"
-            className="object-cover object-center"
-          />
+          {videoUrl ? (
+            <video
+              src={videoUrl}
+              poster={videoPoster ?? undefined}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              aria-label="Studio highlights"
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+          ) : (
+            <Image
+              src="/sean-hero.jpg"
+              alt="Sean E. Bones"
+              fill
+              priority
+              sizes="(max-width: 768px) 100vw, 40vw"
+              className="object-cover object-center"
+            />
+          )}
         </div>
       </motion.div>
     </section>

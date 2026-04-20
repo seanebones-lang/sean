@@ -22,6 +22,7 @@ const schema = z.object({
   timeline: z.string().optional(),
   firstTattoo: z.string().optional(),
   coverUp: z.string().optional(),
+  referralCode: z.string().max(40).optional(),
   ageConfirm: z.string(),
 });
 
@@ -56,6 +57,7 @@ export async function submitContact(
     timeline: formData.get("timeline"),
     firstTattoo: formData.get("firstTattoo"),
     coverUp: formData.get("coverUp"),
+    referralCode: formData.get("referralCode"),
     ageConfirm: formData.get("ageConfirm") ?? "",
   });
 
@@ -111,6 +113,7 @@ export async function submitContact(
     ``,
     `First tattoo: ${d.firstTattoo === "yes" ? "Yes" : "No"}`,
     `Cover-up / rework: ${d.coverUp === "yes" ? "Yes" : "No"}`,
+    `Referral code: ${d.referralCode?.trim() || "None"}`,
   ];
 
   const resend = new Resend(apiKey);

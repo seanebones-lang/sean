@@ -9,7 +9,18 @@ import { BookingCta } from "@/components/booking-cta";
 import { ImageGallery } from "@/components/image-gallery";
 import { Breadcrumbs } from "@/components/breadcrumbs";
 import { ShareButtons } from "@/components/share-buttons";
-import { getPortfolioPieceBySlug, getPortfolioPieceSlugs } from "./piece-data";
+import { getPortfolioPieceBySlug, getPortfolioPieceSlugs, type PortfolioPieceDetail } from "./piece-data";
+import { getTestimonialsForPiece } from "@/lib/sanity/testimonials";
+import { StickyPieceCta } from "@/components/sticky-piece-cta";
+import { TimelapseEmbed } from "@/components/timelapse-embed";
+
+function buildPrefilledBookingHref(piece: PortfolioPieceDetail): string {
+  const params = new URLSearchParams();
+  params.set("idea", `Inspired by "${piece.title}"`);
+  if (piece.styleTags?.length) params.set("style", piece.styleTags.slice(0, 3).join(", "));
+  if (piece.placement) params.set("placement", piece.placement);
+  return `/booking?${params.toString()}`;
+}
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -68,6 +79,8 @@ export default async function PortfolioPiecePage({ params }: Props) {
   if (!result.ok) notFound();
 
   const { piece, related } = result;
+  const pieceTestimonials = await getTestimonialsForPiece(slug);
+  const bookingHref = buildPrefilledBookingHref(piece);
 
   const images = [
     ...(piece.images?.filter(Boolean) ?? []),
@@ -114,6 +127,11 @@ export default async function PortfolioPiecePage({ params }: Props) {
           {/* Gallery */}
           <div className="min-w-0">
             <ImageGallery images={imageUrls} healedUrl={healedUrl} title={piece.title} />
+            {piece.timelapseUrl ? (
+              <div className="mt-4 overflow-hidden rounded-xl border border-border bg-black">
+                <TimelapseEmbed url={piece.timelapseUrl} title={piece.title} />
+              </div>
+            ) : null}
           </div>
 
           {/* Info sidebar */}
@@ -185,7 +203,29 @@ export default async function PortfolioPiecePage({ params }: Props) {
               </div>
             ) : null}
 
-            <BookingCta />
+            <BookingCta
+              href={bookingHref}
+              label="Love this style?"
+              sub="Start a quick quote — we'll pre-fill this piece's vibe."
+            />
+
+            {pieceTestimonials.length > 0 ? (
+              <div className="section-card rounded-xl p-4">
+                <p className="text-xs uppercase tracking-widest text-muted-foreground">
+                  What clients said
+                </p>
+                <ul className="mt-3 space-y-3">
+                  {pieceTestimonials.slice(0, 2).map((t) => (
+                    <li key={t._id} className="text-sm">
+                      <p className="text-muted-foreground">&ldquo;{t.quote}&rdquo;</p>
+                      <p className="mt-1 text-xs uppercase tracking-[0.14em] text-electric">
+                        {t.name}
+                      </p>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
 
             {/* Share */}
             <div className="section-card rounded-xl p-4">
@@ -224,6 +264,8 @@ export default async function PortfolioPiecePage({ params }: Props) {
           </section>
         ) : null}
       </div>
+
+      <StickyPieceCta title={piece.title} href={bookingHref} />
     </>
   );
 }

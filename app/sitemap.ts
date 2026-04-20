@@ -3,14 +3,19 @@ import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/lib/site";
 import { getPortfolioPieceSlugs } from "@/app/[locale]/portfolio/[slug]/piece-data";
 import { getArtistSlugs } from "@/app/[locale]/artists/[slug]/artist-data";
+import { getBlogPostSlugs } from "@/lib/sanity/blog";
+import { getStyleTags } from "@/lib/sanity/portfolio";
 
 const staticRoutes = [
   { path: "", priority: 1.0, changeFrequency: "weekly" as const },
   { path: "/portfolio", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/portfolio/cover-ups", priority: 0.8, changeFrequency: "monthly" as const },
   { path: "/artists", priority: 0.85, changeFrequency: "weekly" as const },
   { path: "/about", priority: 0.8, changeFrequency: "monthly" as const },
   { path: "/booking", priority: 0.9, changeFrequency: "monthly" as const },
   { path: "/aftercare", priority: 0.6, changeFrequency: "monthly" as const },
+  { path: "/journal", priority: 0.8, changeFrequency: "weekly" as const },
+  { path: "/gift-cards", priority: 0.6, changeFrequency: "monthly" as const },
   { path: "/faq", priority: 0.7, changeFrequency: "monthly" as const },
   { path: "/policies", priority: 0.5, changeFrequency: "monthly" as const },
   { path: "/testimonials", priority: 0.7, changeFrequency: "monthly" as const },
@@ -18,9 +23,11 @@ const staticRoutes = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [pieceSlugs, artistSlugs] = await Promise.all([
+  const [pieceSlugs, artistSlugs, blogSlugs, styleTags] = await Promise.all([
     getPortfolioPieceSlugs(),
     getArtistSlugs(),
+    getBlogPostSlugs(),
+    getStyleTags(),
   ]);
 
   const staticEntries = routing.locales.flatMap((locale) =>
@@ -50,5 +57,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }))
   );
 
-  return [...staticEntries, ...portfolioEntries, ...artistEntries];
+  const blogEntries = routing.locales.flatMap((locale) =>
+    blogSlugs.map((b) => ({
+      url: `${siteConfig.siteUrl}/${locale}/journal/${b.slug}`,
+      lastModified: new Date(b.updatedAt),
+      changeFrequency: "monthly" as const,
+      priority: 0.65,
+    }))
+  );
+
+  const styleEntries = routing.locales.flatMap((locale) =>
+    styleTags.map((tag) => ({
+      url: `${siteConfig.siteUrl}/${locale}/portfolio/style/${tag.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "monthly" as const,
+      priority: 0.7,
+    }))
+  );
+
+  return [
+    ...staticEntries,
+    ...portfolioEntries,
+    ...artistEntries,
+    ...blogEntries,
+    ...styleEntries,
+  ];
 }

@@ -14,7 +14,10 @@ export const siteSettingsQuery = groq`
     contactEmail,
     phoneNumber,
     studioAddress,
-    businessHours
+    businessHours,
+    instagramFeed[]{ image, url, caption },
+    heroVideoUrl,
+    heroVideoPoster
   }
 `;
 
@@ -86,6 +89,7 @@ export const portfolioPieceBySlugQuery = groq`
     image,
     mainImage,
     healedImage,
+    timelapseUrl,
     publishedAt,
     "artist": artist->{
       name,
@@ -210,5 +214,91 @@ export const recentFeaturedQuery = groq`
     "slug": slug.current,
     styleTags,
     images
+  }
+`;
+
+/** Testimonials whose relatedPiece matches a given slug. */
+export const testimonialsForPieceQuery = groq`
+  *[_type == "testimonial" && defined(relatedPiece) && relatedPiece->slug.current == $slug] | order(reviewDate desc){
+    _id,
+    quote,
+    name,
+    rating,
+    clientLocation,
+    reviewDate,
+    verified,
+    source
+  }
+`;
+
+/** Portfolio pieces filtered by style tag (matched case-insensitively). */
+export const portfolioByStyleQuery = groq`
+  *[_type == "portfolioPiece" && count(styleTags[lower(@) == $styleLower]) > 0] | order(coalesce(featured, false) desc, _updatedAt desc){
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    styleTags,
+    featured,
+    images,
+    image,
+    mainImage,
+    healedImage
+  }
+`;
+
+/** Unique style tags across portfolio pieces. */
+export const styleTagListQuery = groq`
+  array::unique(*[_type == "portfolioPiece" && defined(styleTags)].styleTags[])
+`;
+
+/** Portfolio pieces with a healed image (cover-ups / before-after). */
+export const coverUpPortfolioQuery = groq`
+  *[_type == "portfolioPiece" && (defined(healedImage) || count(styleTags[lower(@) match "cover*"]) > 0)] | order(coalesce(featured, false) desc, _updatedAt desc){
+    _id,
+    title,
+    "slug": slug.current,
+    description,
+    styleTags,
+    images,
+    image,
+    mainImage,
+    healedImage
+  }
+`;
+
+/** All blog posts, newest first. */
+export const blogPostListQuery = groq`
+  *[_type == "blogPost" && defined(slug.current)] | order(publishedAt desc, _createdAt desc){
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    coverImage,
+    publishedAt,
+    styleTags,
+    "relatedPiece": relatedPiece->{ title, "slug": slug.current }
+  }
+`;
+
+/** Single blog post. */
+export const blogPostBySlugQuery = groq`
+  *[_type == "blogPost" && slug.current == $slug][0]{
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    coverImage,
+    publishedAt,
+    body,
+    styleTags,
+    "relatedPiece": relatedPiece->{ title, "slug": slug.current, images }
+  }
+`;
+
+export const blogPostSlugsQuery = groq`
+  *[_type == "blogPost" && defined(slug.current)]{
+    "slug": slug.current,
+    _updatedAt
   }
 `;

@@ -56,6 +56,13 @@ export const portfolioPieceType = defineType({
       description: "Optional healed / settled photo for before-after comparison.",
     }),
     defineField({
+      name: "timelapseUrl",
+      title: "Timelapse / Process Video URL",
+      type: "url",
+      description:
+        "Optional YouTube, Vimeo, or direct MP4 link to a session timelapse or process video.",
+    }),
+    defineField({
       name: "publishedAt",
       title: "Published At",
       type: "datetime",

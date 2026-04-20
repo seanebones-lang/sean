@@ -2,6 +2,7 @@
 
 import { useMemo, useCallback, useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { track } from "@vercel/analytics";
 import { Link } from "@/i18n/navigation";
 import { PortfolioPieceCard } from "./portfolio-piece-card";
 import { cn } from "@/lib/utils";
@@ -26,6 +27,7 @@ export function PortfolioGrid({ pieces }: PortfolioGridProps) {
       } else {
         params.set("style", tag);
       }
+      track("portfolio_filter_used", { style: tag });
       const qs = params.toString();
       router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { scroll: false });
     },
