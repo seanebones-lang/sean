@@ -105,6 +105,7 @@ export function ImageGallery({ images, healedUrl, title }: ImageGalleryProps) {
         {healedUrl ? (
           <button
             type="button"
+            aria-pressed={compareMode}
             onClick={() => setCompareMode((v) => !v)}
             className={cn(
               "rounded-full border px-3 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors",
@@ -203,7 +204,11 @@ export function ImageGallery({ images, healedUrl, title }: ImageGalleryProps) {
           ) : null}
 
           {allImages.length > 1 ? (
-            <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-white/60">
+            <p
+              aria-live="polite"
+              aria-atomic="true"
+              className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs text-white/60"
+            >
               {activeIndex + 1} / {allImages.length}
             </p>
           ) : null}

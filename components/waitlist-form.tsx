@@ -27,6 +27,7 @@ export function WaitlistForm({ artistSlug, artistName }: WaitlistFormProps) {
         <button
           type="button"
           onClick={() => setExpanded(true)}
+          aria-expanded={false}
           className="electric-ring mt-4 inline-flex touch-manipulation items-center justify-center rounded-full border border-electric px-4 py-2 text-xs font-semibold uppercase tracking-widest text-foreground hover:text-electric"
         >
           Join Waitlist

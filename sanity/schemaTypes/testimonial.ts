@@ -4,6 +4,25 @@ export const testimonialType = defineType({
   name: "testimonial",
   title: "Testimonial",
   type: "document",
+  orderings: [
+    {
+      title: "Featured first",
+      name: "featuredFirst",
+      by: [
+        { field: "featured", direction: "desc" },
+        { field: "reviewDate", direction: "desc" },
+      ],
+    },
+    {
+      title: "Highest rated",
+      name: "highestRated",
+      by: [
+        { field: "rating", direction: "desc" },
+        { field: "reviewDate", direction: "desc" },
+      ],
+    },
+    { title: "Newest", name: "newest", by: [{ field: "reviewDate", direction: "desc" }] },
+  ],
   fields: [
     defineField({
       name: "quote",
@@ -66,6 +85,18 @@ export const testimonialType = defineType({
     }),
   ],
   preview: {
-    select: { title: "name", subtitle: "quote" },
+    select: {
+      title: "name",
+      subtitle: "quote",
+      rating: "rating",
+      featured: "featured",
+    },
+    prepare({ title, subtitle, rating, featured }) {
+      const stars = rating ? "★".repeat(rating) : "";
+      return {
+        title: featured ? `★ ${title}` : title,
+        subtitle: [stars, subtitle?.slice(0, 60)].filter(Boolean).join(" — "),
+      };
+    },
   },
 });

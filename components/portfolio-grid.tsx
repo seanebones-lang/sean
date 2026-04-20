@@ -82,6 +82,7 @@ export function PortfolioGrid({ pieces }: PortfolioGridProps) {
           <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by style">
             <button
               type="button"
+              aria-pressed={activeTag === "all"}
               onClick={() => setActiveTag("all")}
               className={cn(
                 "rounded-full border px-3 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors",
@@ -98,6 +99,7 @@ export function PortfolioGrid({ pieces }: PortfolioGridProps) {
                 <button
                   key={tag}
                   type="button"
+                  aria-pressed={activeTag === tag}
                   onClick={() => setActiveTag(tag)}
                   className={cn(
                     "rounded-full border px-3 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors",
@@ -113,6 +115,13 @@ export function PortfolioGrid({ pieces }: PortfolioGridProps) {
           </div>
         ) : null}
       </div>
+
+      {/* Screen-reader live region for filter results */}
+      <p className="sr-only" aria-live="polite" aria-atomic="true">
+        {filtered.length === pieces.length
+          ? `Showing all ${pieces.length} pieces`
+          : `${filtered.length} piece${filtered.length === 1 ? "" : "s"} found`}
+      </p>
 
       {/* Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
