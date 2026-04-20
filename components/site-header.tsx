@@ -2,6 +2,7 @@
 
 import { useTranslations } from "next-intl";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { navItems } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -10,7 +11,11 @@ import { LocaleSwitcher } from "./locale-switcher";
 export function SiteHeader() {
   const t = useTranslations("nav");
   const common = useTranslations("common");
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  // Derive active segment: strip locale prefix from pathname
+  const activeSegment = "/" + (pathname.split("/").slice(2).join("/") || "");
   const menuTitleId = useId();
   const closeButtonRef = useRef<HTMLButtonElement>(null);
 
@@ -48,15 +53,24 @@ export function SiteHeader() {
           </Link>
 
           <nav className="hidden items-center gap-4 lg:flex" aria-label="Primary">
-            {navItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                className="text-sm text-muted-foreground hover:text-electric"
-              >
-                {t(item.key)}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = item.href === "/"
+                ? activeSegment === "/"
+                : activeSegment.startsWith(item.href);
+              return (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "text-sm transition-colors",
+                    isActive ? "text-electric" : "text-muted-foreground hover:text-electric"
+                  )}
+                >
+                  {t(item.key)}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="flex shrink-0 items-center gap-1.5 min-[400px]:gap-2 min-[480px]:gap-3">
@@ -148,16 +162,25 @@ export function SiteHeader() {
             >
               {common("bookNow")}
             </Link>
-            {navItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                className="flex min-h-12 touch-manipulation items-center rounded-xl px-4 text-base text-foreground active:bg-surface hover:bg-surface"
-                onClick={close}
-              >
-                {t(item.key)}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              const isActive = item.href === "/"
+                ? activeSegment === "/"
+                : activeSegment.startsWith(item.href);
+              return (
+                <Link
+                  key={item.key}
+                  href={item.href}
+                  aria-current={isActive ? "page" : undefined}
+                  className={cn(
+                    "flex min-h-12 touch-manipulation items-center rounded-xl px-4 text-base active:bg-surface hover:bg-surface",
+                    isActive ? "text-electric" : "text-foreground"
+                  )}
+                  onClick={close}
+                >
+                  {t(item.key)}
+                </Link>
+              );
+            })}
           </nav>
 
           <div className="border-t border-border p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">

@@ -4,6 +4,18 @@ export const portfolioPieceType = defineType({
   name: "portfolioPiece",
   title: "Portfolio Piece",
   type: "document",
+  orderings: [
+    {
+      title: "Featured first",
+      name: "featuredFirst",
+      by: [
+        { field: "featured", direction: "desc" },
+        { field: "_updatedAt", direction: "desc" },
+      ],
+    },
+    { title: "Newest", name: "newest", by: [{ field: "_createdAt", direction: "desc" }] },
+    { title: "Title A–Z", name: "titleAsc", by: [{ field: "title", direction: "asc" }] },
+  ],
   fields: [
     defineField({ name: "title", title: "Title", type: "string", validation: (rule) => rule.required() }),
     defineField({ name: "slug", title: "Slug", type: "slug", options: { source: "title" }, validation: (rule) => rule.required() }),
@@ -14,6 +26,19 @@ export const portfolioPieceType = defineType({
       title: "Style Tags",
       type: "array",
       of: [{ type: "string" }],
+      description: "e.g. 'Black & Grey', 'Fine Line', 'Realism'",
+    }),
+    defineField({
+      name: "placement",
+      title: "Body Placement",
+      type: "string",
+      options: {
+        list: [
+          "Arm / Sleeve", "Forearm", "Upper arm", "Hand / Fingers",
+          "Chest", "Back", "Ribcage / Side", "Leg / Thigh",
+          "Calf / Shin", "Foot / Ankle", "Neck", "Head / Face", "Other",
+        ],
+      },
     }),
     defineField({ name: "description", title: "Description", type: "text" }),
     defineField({
@@ -37,4 +62,19 @@ export const portfolioPieceType = defineType({
       initialValue: () => new Date().toISOString(),
     }),
   ],
+  preview: {
+    select: {
+      title: "title",
+      artist: "artist.name",
+      media: "images.0",
+      featured: "featured",
+    },
+    prepare({ title, artist, media, featured }) {
+      return {
+        title: featured ? `⭐ ${title}` : title,
+        subtitle: artist ?? "No artist assigned",
+        media,
+      };
+    },
+  },
 });

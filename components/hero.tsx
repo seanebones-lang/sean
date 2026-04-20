@@ -3,11 +3,20 @@
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "motion/react";
 import { Link } from "@/i18n/navigation";
+import { useEffect, useState } from "react";
 
 const HeroCanvas = dynamic(
   () => import("./hero-canvas").then((module) => module.HeroCanvas),
   { ssr: false }
 );
+
+function CanvasPlaceholder() {
+  return (
+    <div className="relative h-[min(42dvh,20rem)] w-full min-h-[200px] touch-none rounded-2xl border border-border bg-gradient-to-b from-surface/80 to-black min-[480px]:h-[min(44dvh,22rem)] md:h-[320px] md:min-h-[320px]">
+      <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(ellipse_at_60%_40%,#21c7ff14_0%,transparent_70%)]" />
+    </div>
+  );
+}
 
 type HeroProps = {
   eyebrow: string;
@@ -27,6 +36,17 @@ export function Hero({
   stats,
 }: HeroProps) {
   const reduced = useReducedMotion();
+  const [canvasReady, setCanvasReady] = useState(false);
+
+  useEffect(() => {
+    if (reduced) return;
+    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
+      const id = requestIdleCallback(() => setCanvasReady(true), { timeout: 1200 });
+      return () => cancelIdleCallback(id);
+    }
+    const t = setTimeout(() => setCanvasReady(true), 600);
+    return () => clearTimeout(t);
+  }, [reduced]);
 
   return (
     <section className="grid min-w-0 gap-8 py-8 min-[480px]:py-12 md:grid-cols-[1.2fr_1fr] md:py-16">
@@ -72,7 +92,7 @@ export function Hero({
         animate={reduced ? undefined : { opacity: 1, scale: 1 }}
         transition={{ duration: 0.55, ease: "easeOut", delay: 0.12 }}
       >
-        <HeroCanvas />
+        {canvasReady ? <HeroCanvas /> : <CanvasPlaceholder />}
       </motion.div>
     </section>
   );

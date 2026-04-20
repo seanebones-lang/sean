@@ -129,4 +129,24 @@ export const artistType = defineType({
       of: [{ type: "reference", to: [{ type: "portfolioPiece" }] }],
     }),
   ],
+  preview: {
+    select: {
+      title: "name",
+      subtitle: "availabilityStatus",
+      media: "profileImage",
+      sponsored: "isSponsored",
+    },
+    prepare({ title, subtitle, media, sponsored }) {
+      const statusMap: Record<string, string> = {
+        open: "Booking open",
+        waitlist: "Waitlist",
+        closed: "Closed",
+      };
+      return {
+        title: sponsored ? `★ ${title}` : title,
+        subtitle: statusMap[subtitle as string] ?? subtitle,
+        media,
+      };
+    },
+  },
 });

@@ -7,6 +7,8 @@ import { urlFor } from "@/sanity/lib/image";
 import { PortfolioPieceCard } from "@/components/portfolio-piece-card";
 import { BookingCta } from "@/components/booking-cta";
 import { ImageGallery } from "@/components/image-gallery";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { ShareButtons } from "@/components/share-buttons";
 import { getPortfolioPieceBySlug, getPortfolioPieceSlugs } from "./piece-data";
 
 type Props = {
@@ -24,7 +26,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const result = await getPortfolioPieceBySlug(slug);
   if (!result.ok) return {};
 
@@ -49,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...(imageUrl ? { images: [{ url: imageUrl, width: 1200, height: 630 }] } : {}),
     },
     alternates: {
-      canonical: `${siteConfig.siteUrl}/en/portfolio/${slug}`,
+      canonical: `${siteConfig.siteUrl}/${locale}/portfolio/${slug}`,
       languages: {
         en: `${siteConfig.siteUrl}/en/portfolio/${slug}`,
         es: `${siteConfig.siteUrl}/es/portfolio/${slug}`,
@@ -95,14 +97,14 @@ export default async function PortfolioPiecePage({ params }: Props) {
       />
 
       <div className="mx-auto w-full max-w-6xl min-w-0 px-3 py-8 min-[480px]:px-4 min-[480px]:py-12 sm:px-6">
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-electric">Home</Link>
-          <span aria-hidden>/</span>
-          <Link href="/portfolio" className="hover:text-electric">Portfolio</Link>
-          <span aria-hidden>/</span>
-          <span className="text-foreground">{piece.title}</span>
-        </nav>
+        <Breadcrumbs
+          locale={locale}
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Portfolio", href: "/portfolio" },
+            { label: piece.title },
+          ]}
+        />
 
         <div className="grid gap-10 lg:grid-cols-[1fr_22rem]">
           {/* Gallery */}
@@ -117,9 +119,14 @@ export default async function PortfolioPiecePage({ params }: Props) {
                 {piece.title}
               </h1>
 
-              {piece.styleTags?.length ? (
+              {piece.styleTags?.length || piece.placement ? (
                 <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Style tags">
-                  {piece.styleTags.map((tag) => (
+                  {piece.placement ? (
+                    <li className="rounded-full border border-electric/30 bg-electric/5 px-2 py-0.5 text-[10px] uppercase tracking-wider text-electric">
+                      {piece.placement}
+                    </li>
+                  ) : null}
+                  {piece.styleTags?.map((tag) => (
                     <li
                       key={tag}
                       className="rounded-full border border-border px-2 py-0.5 text-[10px] uppercase tracking-wider text-muted-foreground"
@@ -128,6 +135,15 @@ export default async function PortfolioPiecePage({ params }: Props) {
                     </li>
                   ))}
                 </ul>
+              ) : null}
+
+              {piece.publishedAt ? (
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {new Date(piece.publishedAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                  })}
+                </p>
               ) : null}
 
               {piece.description ? (
@@ -151,6 +167,17 @@ export default async function PortfolioPiecePage({ params }: Props) {
                     {piece.artist.specialties.slice(0, 3).join(" · ")}
                   </p>
                 ) : null}
+                {piece.artist.availabilityStatus === "open" ? (
+                  <span className="mt-2 inline-flex items-center gap-1.5 text-xs text-emerald-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden />
+                    Booking open
+                  </span>
+                ) : piece.artist.availabilityStatus === "waitlist" ? (
+                  <span className="mt-2 inline-flex items-center gap-1.5 text-xs text-amber-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400" aria-hidden />
+                    Waitlist
+                  </span>
+                ) : null}
               </div>
             ) : null}
 
@@ -159,25 +186,11 @@ export default async function PortfolioPiecePage({ params }: Props) {
             {/* Share */}
             <div className="section-card rounded-xl p-4">
               <p className="text-xs uppercase tracking-widest text-muted-foreground">Share</p>
-              <div className="mt-2 flex gap-3 text-sm">
-                <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${siteConfig.siteUrl}/en/portfolio/${piece.slug}`)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-muted-foreground hover:text-electric"
-                  aria-label="Share on Facebook"
-                >
-                  Facebook
-                </a>
-                <a
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${siteConfig.siteUrl}/en/portfolio/${piece.slug}`)}&text=${encodeURIComponent(piece.title)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-muted-foreground hover:text-electric"
-                  aria-label="Share on X (Twitter)"
-                >
-                  X / Twitter
-                </a>
+              <div className="mt-2">
+                <ShareButtons
+                  url={`${siteConfig.siteUrl}/${locale}/portfolio/${piece.slug}`}
+                  title={piece.title}
+                />
               </div>
             </div>
           </div>

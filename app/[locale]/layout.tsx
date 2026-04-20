@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { BackToTop } from "@/components/back-to-top";
 import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/lib/site";
 
@@ -94,6 +95,7 @@ export default async function LocaleLayout({ children, params }: LocaleLayoutPro
           <SiteHeader />
           <main id="main-content">{children}</main>
           <SiteFooter />
+          <BackToTop />
         </NextIntlClientProvider>
         <Analytics />
       </body>

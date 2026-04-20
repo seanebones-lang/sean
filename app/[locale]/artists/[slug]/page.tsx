@@ -7,6 +7,9 @@ import { urlFor } from "@/sanity/lib/image";
 import { siteConfig } from "@/lib/site";
 import { PortfolioPieceCard } from "@/components/portfolio-piece-card";
 import { BookingCta } from "@/components/booking-cta";
+import { Breadcrumbs } from "@/components/breadcrumbs";
+import { MobileBookCta } from "@/components/mobile-book-cta";
+import { WaitlistForm } from "@/components/waitlist-form";
 import { getArtistBySlug, getArtistSlugs } from "./artist-data";
 
 type Props = {
@@ -24,7 +27,7 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const result = await getArtistBySlug(slug);
   if (!result.ok) return {};
 
@@ -48,7 +51,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       ...(imageUrl ? { images: [{ url: imageUrl, width: 1200, height: 630 }] } : {}),
     },
     alternates: {
-      canonical: `${siteConfig.siteUrl}/en/artists/${slug}`,
+      canonical: `${siteConfig.siteUrl}/${locale}/artists/${slug}`,
       languages: {
         en: `${siteConfig.siteUrl}/en/artists/${slug}`,
         es: `${siteConfig.siteUrl}/es/artists/${slug}`,
@@ -121,7 +124,20 @@ export default async function ArtistPage({ params }: Props) {
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
       </div>
 
+      <MobileBookCta href={bookingHref} />
+
       <div className="mx-auto w-full max-w-6xl min-w-0 px-3 pb-16 min-[480px]:px-4 sm:px-6">
+        <div className="pt-6">
+          <Breadcrumbs
+            locale={locale}
+            items={[
+              { label: "Home", href: "/" },
+              { label: "Artists", href: "/artists" },
+              { label: artist.name },
+            ]}
+          />
+        </div>
+
         {/* Profile header */}
         <div className="relative -mt-16 mb-8 flex flex-col gap-4 sm:-mt-20 sm:flex-row sm:items-end sm:gap-6">
           <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-2xl border-2 border-border bg-surface shadow-xl sm:h-36 sm:w-36">
@@ -218,12 +234,14 @@ export default async function ArtistPage({ params }: Props) {
                   Portfolio ({artist.portfolioPieces.length})
                 </h2>
                 <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                  {artist.portfolioPieces.map((piece) => (
-                    <Link key={piece._id} href={`/portfolio/${piece.slug}`}>
+                  {artist.portfolioPieces.map((piece, i) => (
+                    <Link key={piece._id} href={`/portfolio/${piece.slug}`} className="group">
                       <PortfolioPieceCard
                         title={piece.title}
                         styleTags={piece.styleTags}
                         image={piece.images?.[0] ?? null}
+                        featured={piece.featured ?? false}
+                        priority={i < 3}
                       />
                     </Link>
                   ))}
@@ -359,8 +377,12 @@ export default async function ArtistPage({ params }: Props) {
               </div>
             ) : null}
 
-            {/* Book CTA */}
-            <BookingCta href={bookingHref} />
+            {/* Book CTA or Waitlist */}
+            {artist.availabilityStatus === "open" ? (
+              <BookingCta href={bookingHref} />
+            ) : (
+              <WaitlistForm artistSlug={artist.slug} artistName={artist.name} />
+            )}
           </aside>
         </div>
       </div>

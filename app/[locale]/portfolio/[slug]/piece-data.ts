@@ -17,6 +17,7 @@ export type PortfolioPieceDetail = {
   slug: string;
   description?: string | null;
   styleTags?: string[] | null;
+  placement?: string | null;
   featured?: boolean | null;
   images?: SanityImageSource[] | null;
   healedImage?: SanityImageSource | null;

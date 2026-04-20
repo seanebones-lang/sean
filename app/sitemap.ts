@@ -7,6 +7,7 @@ import { getArtistSlugs } from "@/app/[locale]/artists/[slug]/artist-data";
 const staticRoutes = [
   { path: "", priority: 1.0, changeFrequency: "weekly" as const },
   { path: "/portfolio", priority: 0.9, changeFrequency: "weekly" as const },
+  { path: "/artists", priority: 0.85, changeFrequency: "weekly" as const },
   { path: "/about", priority: 0.8, changeFrequency: "monthly" as const },
   { path: "/booking", priority: 0.9, changeFrequency: "monthly" as const },
   { path: "/aftercare", priority: 0.6, changeFrequency: "monthly" as const },

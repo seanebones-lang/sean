@@ -4,11 +4,45 @@ export const siteSettingsQuery = groq`
   *[_type == "siteSettings"][0]{
     siteName,
     tagline,
+    footerBio,
     bookingUrl,
     depositPaymentUrl,
+    bookingStatus,
     instagramUrl,
     facebookUrl,
-    contactEmail
+    tiktokUrl,
+    contactEmail,
+    phoneNumber,
+    studioAddress,
+    businessHours
+  }
+`;
+
+export const faqItemsQuery = groq`
+  *[_type == "faqItem"] | order(order asc, _createdAt asc){
+    _id,
+    question,
+    answer
+  }
+`;
+
+export const sponsorPartnersQuery = groq`
+  *[_type == "sponsorPartner" && active == true] | order(_createdAt asc){
+    _id,
+    name,
+    logo,
+    url
+  }
+`;
+
+export const aftercarePageQuery = groq`
+  *[_type == "aftercarePage"][0]{
+    title,
+    intro,
+    steps[]{ heading, body },
+    warningNote,
+    productRecommendations,
+    content
   }
 `;
 
@@ -43,6 +77,7 @@ export const portfolioPieceBySlugQuery = groq`
     "slug": slug.current,
     description,
     styleTags,
+    placement,
     featured,
     images,
     healedImage,
@@ -133,5 +168,39 @@ export const artistListQuery = groq`
     availabilityStatus,
     isSponsored,
     "pieceCount": count(*[_type == "portfolioPiece" && references(^._id)])
+  }
+`;
+
+/** All testimonials. */
+export const testimonialListQuery = groq`
+  *[_type == "testimonial"] | order(coalesce(featured, false) desc, reviewDate desc) {
+    _id,
+    quote,
+    name,
+    rating,
+    clientLocation,
+    reviewDate,
+    verified,
+    source,
+    featured,
+    "artist": artist->{ name, "slug": slug.current },
+    "relatedPiece": relatedPiece->{ title, "slug": slug.current }
+  }
+`;
+
+/** Aggregate rating summary across all testimonials. */
+export const aggregateRatingQuery = groq`{
+  "count": count(*[_type == "testimonial" && defined(rating)]),
+  "average": math::avg(*[_type == "testimonial" && defined(rating)].rating)
+}`;
+
+/** Recent featured portfolio pieces for home. */
+export const recentFeaturedQuery = groq`
+  *[_type == "portfolioPiece"] | order(coalesce(featured, false) desc, _updatedAt desc)[0...6]{
+    _id,
+    title,
+    "slug": slug.current,
+    styleTags,
+    images
   }
 `;
