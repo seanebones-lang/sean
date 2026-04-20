@@ -11,14 +11,24 @@ type InstagramStripProps = {
   subheading?: string;
 };
 
+function isSafeUrl(url?: string | null): url is string {
+  if (!url) return false;
+  try {
+    const { protocol } = new URL(url);
+    return protocol === "https:" || protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 export function InstagramStrip({
   items,
   profileUrl,
   heading = "From the studio",
   subheading = "Fresh work, open-slot drops, and flash sheets on Instagram.",
 }: InstagramStripProps) {
-  const resolvedProfile = profileUrl || siteConfig.instagram;
-  const posts = (items ?? []).filter((i) => i?.image && i?.url).slice(0, 6);
+  const resolvedProfile = isSafeUrl(profileUrl) ? profileUrl : siteConfig.instagram;
+  const posts = (items ?? []).filter((i) => i?.image && isSafeUrl(i?.url)).slice(0, 6);
 
   if (posts.length === 0) {
     if (!resolvedProfile) return null;
