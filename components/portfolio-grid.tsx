@@ -82,7 +82,7 @@ export function PortfolioGrid({ pieces }: PortfolioGridProps) {
 
       {/* Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {filtered.map((piece) => (
+        {filtered.map((piece, i) => (
           <Link key={piece._id} href={`/portfolio/${piece.slug}`} className="group">
             <PortfolioPieceCard
               title={piece.title}
@@ -90,6 +90,7 @@ export function PortfolioGrid({ pieces }: PortfolioGridProps) {
               styleTags={piece.styleTags}
               image={piece.images?.[0] ?? null}
               featured={piece.featured ?? false}
+              priority={i < 3}
             />
           </Link>
         ))}

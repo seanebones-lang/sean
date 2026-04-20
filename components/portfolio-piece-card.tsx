@@ -8,9 +8,10 @@ export type PortfolioPieceCardProps = {
   styleTags?: string[] | null;
   image?: SanityImageSource | null;
   featured?: boolean;
+  priority?: boolean;
 };
 
-export function PortfolioPieceCard({ title, description, styleTags, image, featured }: PortfolioPieceCardProps) {
+export function PortfolioPieceCard({ title, description, styleTags, image, featured, priority = false }: PortfolioPieceCardProps) {
   const alt = description?.trim() ? `${title} — ${description.trim().slice(0, 120)}` : title;
 
   return (
@@ -28,6 +29,7 @@ export function PortfolioPieceCard({ title, description, styleTags, image, featu
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            priority={priority}
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center border-b border-border text-sm text-muted-foreground">
