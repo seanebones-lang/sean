@@ -20,6 +20,8 @@ export type PortfolioPieceDetail = {
   placement?: string | null;
   featured?: boolean | null;
   images?: SanityImageSource[] | null;
+  image?: SanityImageSource | null;
+  mainImage?: SanityImageSource | null;
   healedImage?: SanityImageSource | null;
   publishedAt?: string | null;
   artist?: PieceArtist | null;
@@ -31,6 +33,9 @@ export type RelatedPiece = {
   slug: string | null;
   styleTags?: string[] | null;
   images?: SanityImageSource[] | null;
+  image?: SanityImageSource | null;
+  mainImage?: SanityImageSource | null;
+  healedImage?: SanityImageSource | null;
 };
 
 export type PieceFetchResult =

@@ -65,7 +65,10 @@ export const portfolioListQuery = groq`
     description,
     styleTags,
     featured,
-    images
+    images,
+    image,
+    mainImage,
+    healedImage
   }
 `;
 
@@ -80,6 +83,8 @@ export const portfolioPieceBySlugQuery = groq`
     placement,
     featured,
     images,
+    image,
+    mainImage,
     healedImage,
     publishedAt,
     "artist": artist->{
@@ -99,7 +104,10 @@ export const relatedPiecesQuery = groq`
     title,
     "slug": slug.current,
     styleTags,
-    images
+    images,
+    image,
+    mainImage,
+    healedImage
   }
 `;
 

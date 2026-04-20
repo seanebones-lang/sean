@@ -11,6 +11,9 @@ export type PortfolioListItem = {
   styleTags?: string[] | null;
   featured?: boolean | null;
   images?: SanityImageSource[] | null;
+  image?: SanityImageSource | null;
+  mainImage?: SanityImageSource | null;
+  healedImage?: SanityImageSource | null;
 };
 
 export type PortfolioFetchResult =

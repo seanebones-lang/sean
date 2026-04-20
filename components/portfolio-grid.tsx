@@ -131,7 +131,13 @@ export function PortfolioGrid({ pieces }: PortfolioGridProps) {
               title={piece.title}
               description={piece.description}
               styleTags={piece.styleTags}
-              image={piece.images?.[0] ?? null}
+              image={
+                piece.images?.find(Boolean) ??
+                piece.image ??
+                piece.mainImage ??
+                piece.healedImage ??
+                null
+              }
               featured={piece.featured ?? false}
               priority={i < 3}
             />

@@ -69,7 +69,11 @@ export default async function PortfolioPiecePage({ params }: Props) {
 
   const { piece, related } = result;
 
-  const images = piece.images ?? [];
+  const images = [
+    ...(piece.images?.filter(Boolean) ?? []),
+    ...(piece.image ? [piece.image] : []),
+    ...(piece.mainImage ? [piece.mainImage] : []),
+  ];
   const imageUrls = images.map((img) => ({
     src: urlFor(img).width(1200).height(1500).format("webp").quality(90).url(),
     thumb: urlFor(img).width(400).height(500).format("webp").quality(80).url(),
@@ -206,7 +210,13 @@ export default async function PortfolioPiecePage({ params }: Props) {
                   <PortfolioPieceCard
                     title={rel.title}
                     styleTags={rel.styleTags}
-                    image={rel.images?.[0] ?? null}
+                    image={
+                      rel.images?.find(Boolean) ??
+                      rel.image ??
+                      rel.mainImage ??
+                      rel.healedImage ??
+                      null
+                    }
                   />
                 </Link>
               ))}
