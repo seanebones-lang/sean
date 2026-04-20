@@ -12,6 +12,7 @@ export const siteConfig = {
 export const navItems = [
   { href: "/", key: "home" },
   { href: "/portfolio", key: "portfolio" },
+  { href: "/artists", key: "artists" },
   { href: "/about", key: "about" },
   { href: "/booking", key: "booking" },
   { href: "/aftercare", key: "aftercare" },
