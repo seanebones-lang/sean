@@ -18,6 +18,15 @@ export const siteSettingsQuery = groq`
   }
 `;
 
+export const sponsorPartnersQuery = groq`
+  *[_type == "sponsorPartner" && active == true] | order(_createdAt asc){
+    _id,
+    name,
+    logo,
+    url
+  }
+`;
+
 export const aftercarePageQuery = groq`
   *[_type == "aftercarePage"][0]{
     title,

@@ -6,7 +6,7 @@ import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/lib/site";
 import { getAggregateRating } from "@/lib/sanity/testimonials";
 import { sanityClient } from "@/sanity/lib/client";
-import { recentFeaturedQuery } from "@/sanity/lib/queries";
+import { recentFeaturedQuery, sponsorPartnersQuery } from "@/sanity/lib/queries";
 import { sanityEnv } from "@/sanity/env";
 import { urlFor } from "@/sanity/lib/image";
 import type { SanityImageSource } from "@sanity/image-url";
@@ -23,6 +23,13 @@ type RecentPiece = {
   images?: SanityImageSource[] | null;
 };
 
+type SponsorPartner = {
+  _id: string;
+  name: string;
+  logo?: SanityImageSource | null;
+  url?: string | null;
+};
+
 async function getRecentPieces(): Promise<RecentPiece[]> {
   if (!sanityEnv.isConfigured) return [];
   try {
@@ -37,12 +44,26 @@ async function getRecentPieces(): Promise<RecentPiece[]> {
   }
 }
 
+async function getSponsorPartners(): Promise<SponsorPartner[]> {
+  if (!sanityEnv.isConfigured) return [];
+  try {
+    const res = await sanityClient.fetch<SponsorPartner[]>(
+      sponsorPartnersQuery,
+      {},
+      { next: { revalidate: 300 } }
+    );
+    return Array.isArray(res) ? res : [];
+  } catch {
+    return [];
+  }
+}
+
 export default async function HomePage({ params }: HomePageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
 
   const t = await getTranslations("home");
-  const [agg, recent] = await Promise.all([getAggregateRating(), getRecentPieces()]);
+  const [agg, recent, sponsors] = await Promise.all([getAggregateRating(), getRecentPieces(), getSponsorPartners()]);
 
   const ratingValue = agg.average ? Number(agg.average.toFixed(1)) : null;
 
@@ -188,6 +209,50 @@ export default async function HomePage({ params }: HomePageProps) {
             </article>
           ))}
         </section>
+
+        {/* Sponsors strip */}
+        {sponsors.length ? (
+          <section className="pb-10">
+            <p className="section-title mb-4 text-center text-xs text-muted-foreground">Sponsored by</p>
+            <div className="flex flex-wrap items-center justify-center gap-6">
+              {sponsors.map((s) => (
+                s.url ? (
+                  <a
+                    key={s._id}
+                    href={s.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 text-sm text-muted-foreground hover:text-electric"
+                  >
+                    {s.logo ? (
+                      <Image
+                        src={urlFor(s.logo).height(40).format("webp").url()}
+                        alt={s.name}
+                        width={80}
+                        height={40}
+                        className="h-8 w-auto object-contain opacity-60 hover:opacity-100"
+                      />
+                    ) : (
+                      <span>{s.name}</span>
+                    )}
+                  </a>
+                ) : (
+                  <span key={s._id} className="text-sm text-muted-foreground">
+                    {s.logo ? (
+                      <Image
+                        src={urlFor(s.logo).height(40).format("webp").url()}
+                        alt={s.name}
+                        width={80}
+                        height={40}
+                        className="h-8 w-auto object-contain opacity-60"
+                      />
+                    ) : s.name}
+                  </span>
+                )
+              ))}
+            </div>
+          </section>
+        ) : null}
 
         {/* Recent work preview */}
         {recent.length ? (

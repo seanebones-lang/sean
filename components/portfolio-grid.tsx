@@ -71,6 +71,7 @@ export function PortfolioGrid({ pieces }: PortfolioGridProps) {
               description={piece.description}
               styleTags={piece.styleTags}
               image={piece.images?.[0] ?? null}
+              featured={piece.featured ?? false}
             />
           </Link>
         ))}
