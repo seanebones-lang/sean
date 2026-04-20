@@ -4,7 +4,8 @@ import { Hero } from "@/components/hero";
 import { MobileBookCta } from "@/components/mobile-book-cta";
 import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/lib/site";
-import { getAggregateRating } from "@/lib/sanity/testimonials";
+import { getAggregateRating, getTestimonials } from "@/lib/sanity/testimonials";
+import { TestimonialCarousel } from "@/components/testimonial-carousel";
 import { sanityClient } from "@/sanity/lib/client";
 import { recentFeaturedQuery, sponsorPartnersQuery } from "@/sanity/lib/queries";
 import { sanityEnv } from "@/sanity/env";
@@ -63,7 +64,12 @@ export default async function HomePage({ params }: HomePageProps) {
   setRequestLocale(locale);
 
   const t = await getTranslations("home");
-  const [agg, recent, sponsors] = await Promise.all([getAggregateRating(), getRecentPieces(), getSponsorPartners()]);
+  const [agg, recent, sponsors, testimonials] = await Promise.all([
+    getAggregateRating(),
+    getRecentPieces(),
+    getSponsorPartners(),
+    getTestimonials(),
+  ]);
 
   const ratingValue = agg.average ? Number(agg.average.toFixed(1)) : null;
 
@@ -209,6 +215,19 @@ export default async function HomePage({ params }: HomePageProps) {
             </article>
           ))}
         </section>
+
+        {/* Testimonial carousel */}
+        {testimonials.length > 0 ? (
+          <div className="pb-10">
+            <TestimonialCarousel
+              items={testimonials.slice(0, 5).map((t) => ({
+                quote: t.quote,
+                name: t.name,
+                rating: t.rating,
+              }))}
+            />
+          </div>
+        ) : null}
 
         {/* Sponsors strip */}
         {sponsors.length ? (
