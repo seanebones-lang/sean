@@ -1,13 +1,29 @@
+import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/page-shell";
 import { getBookingPortalUrls } from "./booking-portal";
 import { Link } from "@/i18n/navigation";
+import { siteConfig } from "@/lib/site";
 
 export const revalidate = 60;
 
 type BookingPageProps = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: BookingPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "Book a Tattoo",
+    description: "Schedule a tattoo appointment or submit a booking inquiry. Custom designs, consultations, and deposits handled here.",
+    alternates: { canonical: `${siteConfig.siteUrl}/${locale}/booking` },
+    openGraph: {
+      title: "Book a Tattoo — Cody Meneley",
+      description: "Ready to get tattooed? Book your appointment, submit a deposit, or reach out with your concept.",
+      url: `${siteConfig.siteUrl}/${locale}/booking`,
+    },
+  };
+}
 
 export default async function BookingPage({ params }: BookingPageProps) {
   const { locale } = await params;

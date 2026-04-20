@@ -1,11 +1,27 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/page-shell";
 import { PortfolioGrid } from "@/components/portfolio-grid";
 import { MobileBookCta } from "@/components/mobile-book-cta";
 import { sanityEnv } from "@/sanity/env";
 import { getPortfolioPieces } from "./portfolio-data";
+import { siteConfig } from "@/lib/site";
 
 export const revalidate = 60;
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "Portfolio",
+    description: "Browse the full tattoo portfolio — black and grey, fine line, realism, illustrative, and custom styles. Filter by style to find your inspiration.",
+    alternates: { canonical: `${siteConfig.siteUrl}/${locale}/portfolio` },
+    openGraph: {
+      title: "Tattoo Portfolio — Cody Meneley",
+      description: "Custom tattoos across all styles. Browse completed work and find your next piece.",
+      url: `${siteConfig.siteUrl}/${locale}/portfolio`,
+    },
+  };
+}
 
 type PortfolioPageProps = {
   params: Promise<{ locale: string }>;
