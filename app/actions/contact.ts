@@ -26,17 +26,23 @@ const schema = z.object({
   ageConfirm: z.string(),
 });
 
-// Simple in-memory rate limit: max 3 submissions per IP per hour.
+const RATE_WINDOW_MS = 60 * 60 * 1000;
+const RATE_MAX = 3;
 const rateMap = new Map<string, { count: number; resetAt: number }>();
 
 function checkRateLimit(ip: string): boolean {
   const now = Date.now();
+  if (rateMap.size > 5000) {
+    for (const [key, val] of rateMap) {
+      if (now > val.resetAt) rateMap.delete(key);
+    }
+  }
   const entry = rateMap.get(ip);
   if (!entry || now > entry.resetAt) {
-    rateMap.set(ip, { count: 1, resetAt: now + 60 * 60 * 1000 });
+    rateMap.set(ip, { count: 1, resetAt: now + RATE_WINDOW_MS });
     return true;
   }
-  if (entry.count >= 3) return false;
+  if (entry.count >= RATE_MAX) return false;
   entry.count++;
   return true;
 }

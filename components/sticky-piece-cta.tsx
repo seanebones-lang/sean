@@ -31,12 +31,10 @@ export function StickyPieceCta({ title, href }: StickyPieceCtaProps) {
       <Link
         href={href}
         onClick={() => track("sticky_piece_cta_clicked", { title })}
-        className={`pointer-events-auto inline-flex items-center gap-3 rounded-full border border-electric bg-background/90 px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-foreground shadow-lg backdrop-blur hover:text-electric ${
-          visible ? "" : ""
-        }`}
+        className="pointer-events-auto inline-flex items-center gap-3 rounded-full border border-electric bg-background/90 px-5 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-foreground shadow-lg backdrop-blur hover:text-electric"
       >
-        <span className="truncate max-w-[14rem]">Book a session like “{title}”</span>
-        <span className="text-electric">→</span>
+        <span className="truncate max-w-[14rem]">Book a session like &quot;{title}&quot;</span>
+        <span className="text-electric">&rarr;</span>
       </Link>
     </div>
   );

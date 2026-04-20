@@ -23,12 +23,20 @@ const staticRoutes = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [pieceSlugs, artistSlugs, blogSlugs, styleTags] = await Promise.all([
+  const results = await Promise.allSettled([
     getPortfolioPieceSlugs(),
     getArtistSlugs(),
     getBlogPostSlugs(),
     getStyleTags(),
   ]);
+  const [pieceSlugs, artistSlugs, blogSlugs, styleTags] = results.map((r) =>
+    r.status === "fulfilled" ? r.value : []
+  ) as [
+    Awaited<ReturnType<typeof getPortfolioPieceSlugs>>,
+    Awaited<ReturnType<typeof getArtistSlugs>>,
+    Awaited<ReturnType<typeof getBlogPostSlugs>>,
+    Awaited<ReturnType<typeof getStyleTags>>,
+  ];
 
   const staticEntries = routing.locales.flatMap((locale) =>
     staticRoutes.map((r) => ({
