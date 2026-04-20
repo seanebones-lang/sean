@@ -162,6 +162,17 @@ export default async function PortfolioPiecePage({ params }: Props) {
                     {piece.artist.specialties.slice(0, 3).join(" · ")}
                   </p>
                 ) : null}
+                {piece.artist.availabilityStatus === "open" ? (
+                  <span className="mt-2 inline-flex items-center gap-1.5 text-xs text-emerald-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" aria-hidden />
+                    Booking open
+                  </span>
+                ) : piece.artist.availabilityStatus === "waitlist" ? (
+                  <span className="mt-2 inline-flex items-center gap-1.5 text-xs text-amber-400">
+                    <span className="h-1.5 w-1.5 rounded-full bg-amber-400" aria-hidden />
+                    Waitlist
+                  </span>
+                ) : null}
               </div>
             ) : null}
 
