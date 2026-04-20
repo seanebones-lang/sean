@@ -4,6 +4,11 @@ import { PageShell } from "@/components/page-shell";
 import { getBookingPortalUrls } from "./booking-portal";
 import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/lib/site";
+import { QuoteStarterForm } from "@/components/quote-starter-form";
+import { PricingBand } from "@/components/pricing-band";
+import { ReviewBridge } from "@/components/review-bridge";
+import { BookingIframe } from "@/components/booking-iframe";
+import { DepositLink } from "@/components/deposit-link";
 
 export const revalidate = 60;
 
@@ -25,8 +30,20 @@ export async function generateMetadata({ params }: BookingPageProps): Promise<Me
   };
 }
 
-export default async function BookingPage({ params }: BookingPageProps) {
+type BookingSearchParams = {
+  idea?: string;
+  style?: string;
+  placement?: string;
+};
+
+export default async function BookingPage({
+  params,
+  searchParams,
+}: BookingPageProps & {
+  searchParams?: Promise<BookingSearchParams>;
+}) {
   const { locale } = await params;
+  const sp = (await searchParams) ?? {};
   setRequestLocale(locale);
   const t = await getTranslations("booking");
 
@@ -36,6 +53,14 @@ export default async function BookingPage({ params }: BookingPageProps) {
 
   return (
     <PageShell title={t("title")} description={t("description")}>
+      <div className="mb-8">
+        <QuoteStarterForm
+          defaultIdea={sp.idea}
+          defaultStyleHint={sp.style}
+          defaultPlacement={sp.placement}
+          source="booking"
+        />
+      </div>
       {!hasBooking && !hasDeposit ? (
         <div className="section-card rounded-xl p-6">
           <p className="text-muted-foreground">{t("emptyHelp")}</p>
@@ -54,16 +79,11 @@ export default async function BookingPage({ params }: BookingPageProps) {
             <div className="min-w-0">
               <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-electric">{t("scheduleHeading")}</h2>
               <div className="section-card overflow-hidden rounded-xl">
-                <iframe
-                  src={bookingUrl}
-                  title={t("iframeTitle")}
-                  className="h-[min(100dvh,56rem)] min-h-[32rem] w-full bg-surface sm:min-h-[40rem] lg:h-[900px] lg:min-h-0"
-                  loading="lazy"
-                />
+                <BookingIframe src={bookingUrl!} title={t("iframeTitle")} />
               </div>
               <div className="mt-3">
                 <a
-                  href={bookingUrl}
+                  href={bookingUrl!}
                   target="_blank"
                   rel="noreferrer"
                   className="text-sm text-electric underline-offset-4 hover:underline"
@@ -79,14 +99,7 @@ export default async function BookingPage({ params }: BookingPageProps) {
               <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-electric">{t("depositHeading")}</h2>
               <div className="section-card flex flex-col gap-4 rounded-xl p-6">
                 <p className="text-sm leading-relaxed text-muted-foreground">{t("depositBody")}</p>
-                <a
-                  href={depositUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="electric-ring inline-flex w-fit touch-manipulation items-center justify-center rounded-full border border-electric px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.14em] text-foreground hover:text-electric"
-                >
-                  {t("depositCta")}
-                </a>
+                <DepositLink href={depositUrl!} label={t("depositCta")} />
                 <p className="text-xs text-muted-foreground">{t("depositNote")}</p>
               </div>
             </div>
@@ -97,6 +110,10 @@ export default async function BookingPage({ params }: BookingPageProps) {
       {hasBooking && !hasDeposit ? (
         <p className="mt-6 max-w-2xl text-sm text-muted-foreground">{t("depositOptionalHint")}</p>
       ) : null}
+
+      <div className="mt-10">
+        <PricingBand />
+      </div>
 
       {/* Trust signals */}
       <div className="mt-10 grid gap-3 sm:grid-cols-3">
@@ -138,6 +155,10 @@ export default async function BookingPage({ params }: BookingPageProps) {
           {" or "}
           <Link href="/contact" className="text-electric hover:underline">message Sean directly</Link>.
         </p>
+      </div>
+
+      <div className="mt-10">
+        <ReviewBridge heading="Already been tattooed by Sean?" />
       </div>
     </PageShell>
   );

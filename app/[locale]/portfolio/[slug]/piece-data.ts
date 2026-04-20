@@ -23,6 +23,7 @@ export type PortfolioPieceDetail = {
   image?: SanityImageSource | null;
   mainImage?: SanityImageSource | null;
   healedImage?: SanityImageSource | null;
+  timelapseUrl?: string | null;
   publishedAt?: string | null;
   artist?: PieceArtist | null;
 };

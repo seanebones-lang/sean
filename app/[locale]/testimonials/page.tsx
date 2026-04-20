@@ -4,6 +4,7 @@ import { PageShell } from "@/components/page-shell";
 import { Link } from "@/i18n/navigation";
 import { getTestimonials, getAggregateRating } from "@/lib/sanity/testimonials";
 import { siteConfig } from "@/lib/site";
+import { ReviewBridge } from "@/components/review-bridge";
 
 type TestimonialsPageProps = {
   params: Promise<{ locale: string }>;
@@ -131,6 +132,10 @@ export default async function TestimonialsPage({ params }: TestimonialsPageProps
         title="Testimonials"
         description="Client feedback focused on quality, process, and long-term satisfaction."
       >
+        <div className="mb-6">
+          <ReviewBridge heading="Share your experience" />
+        </div>
+
         {/* Aggregate summary */}
         <div className="section-card mb-6 flex flex-wrap items-center justify-between gap-4 rounded-xl p-5">
           <div>

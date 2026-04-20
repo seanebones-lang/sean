@@ -1,6 +1,13 @@
+import type { SanityImageSource } from "@sanity/image-url";
 import { sanityClient } from "@/sanity/lib/client";
 import { siteSettingsQuery } from "@/sanity/lib/queries";
 import { sanityEnv } from "@/sanity/env";
+
+export type InstagramFeedItem = {
+  image?: SanityImageSource | null;
+  url?: string | null;
+  caption?: string | null;
+};
 
 export type SiteSettings = {
   siteName?: string | null;
@@ -16,6 +23,9 @@ export type SiteSettings = {
   phoneNumber?: string | null;
   studioAddress?: string | null;
   businessHours?: string | null;
+  instagramFeed?: InstagramFeedItem[] | null;
+  heroVideoUrl?: string | null;
+  heroVideoPoster?: SanityImageSource | null;
 };
 
 export async function getSiteSettings(): Promise<SiteSettings | null> {

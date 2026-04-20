@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Hero } from "@/components/hero";
 import { MobileBookCta } from "@/components/mobile-book-cta";
 import { Link } from "@/i18n/navigation";
-import { siteConfig } from "@/lib/site";
 import { getAggregateRating, getTestimonials } from "@/lib/sanity/testimonials";
 import { TestimonialCarousel } from "@/components/testimonial-carousel";
 import { sanityClient } from "@/sanity/lib/client";
@@ -11,6 +10,9 @@ import { recentFeaturedQuery, sponsorPartnersQuery } from "@/sanity/lib/queries"
 import { sanityEnv } from "@/sanity/env";
 import { urlFor } from "@/sanity/lib/image";
 import type { SanityImageSource } from "@sanity/image-url";
+import { getSiteSettings } from "@/lib/sanity/site-settings";
+import { InstagramStrip } from "@/components/instagram-strip";
+import { HomeStructuredData } from "@/components/home-structured-data";
 
 type HomePageProps = {
   params: Promise<{ locale: string }>;
@@ -64,112 +66,15 @@ export default async function HomePage({ params }: HomePageProps) {
   setRequestLocale(locale);
 
   const t = await getTranslations("home");
-  const [agg, recent, sponsors, testimonials] = await Promise.all([
+  const [agg, recent, sponsors, testimonials, settings] = await Promise.all([
     getAggregateRating(),
     getRecentPieces(),
     getSponsorPartners(),
     getTestimonials(),
+    getSiteSettings(),
   ]);
 
   const ratingValue = agg.average ? Number(agg.average.toFixed(1)) : null;
-
-  const personLd: Record<string, unknown> = {
-    "@context": "https://schema.org",
-    "@type": ["Person", "LocalBusiness"],
-    name: siteConfig.name,
-    email: siteConfig.email,
-    url: siteConfig.siteUrl,
-    sameAs: [siteConfig.instagram, siteConfig.facebook].filter(Boolean),
-    description: siteConfig.description,
-    knowsAbout: [
-      "Tattoo",
-      "Custom tattoo",
-      "Award-winning tattoo",
-      "Internationally published tattoo art",
-      "Fine line tattoo",
-    ],
-    hasOccupation: {
-      "@type": "Occupation",
-      name: "Tattoo Artist",
-      startDate: "1999",
-      occupationLocation: {
-        "@type": "Place",
-        name: "Mansfield",
-        containedInPlace: { "@type": "AdministrativeArea", name: "Texas" },
-      },
-    },
-    additionalType: "https://schema.org/ProfessionalService",
-    priceRange: "$$",
-    currenciesAccepted: "USD",
-    paymentAccepted: "Cash, Credit Card",
-    openingHours: "By appointment only",
-    areaServed: [
-      { "@type": "AdministrativeArea", name: "Texas" },
-      { "@type": "AdministrativeArea", name: "New Mexico" },
-      { "@type": "AdministrativeArea", name: "Missouri" },
-      { "@type": "AdministrativeArea", name: "Kansas" },
-    ],
-  };
-
-  if (ratingValue && agg.count > 0) {
-    personLd.aggregateRating = {
-      "@type": "AggregateRating",
-      ratingValue,
-      reviewCount: agg.count,
-      bestRating: 5,
-      worstRating: 1,
-    };
-  }
-
-  const servicesLd = {
-    "@context": "https://schema.org",
-    "@type": "OfferCatalog",
-    name: "Tattoo Services",
-    provider: { "@type": "Person", name: siteConfig.name },
-    itemListElement: [
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Custom Tattoo Design & Application",
-          description: "Original custom tattoo designs tailored to your concept, placement, and style preferences.",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Black & grey and color work",
-          description:
-            "Versatile tonal and color tattooing — from fine line and lettering to realism and custom illustrative pieces.",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Cover-Up & Rework",
-          description: "Cover-up or rework of existing tattoos including scars, evaluated case-by-case.",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Tattoo Consultation",
-          description: "Concept refinement, placement planning, and session structure consultation.",
-        },
-      },
-      {
-        "@type": "Offer",
-        itemOffered: {
-          "@type": "Service",
-          name: "Touch-Up Sessions",
-          description: "Follow-up touch-ups on previously completed tattoo work.",
-        },
-      },
-    ],
-  };
 
   return (
     <>
@@ -181,6 +86,12 @@ export default async function HomePage({ params }: HomePageProps) {
           ctaBooking={t("ctaBooking")}
           ctaPortfolio={t("ctaPortfolio")}
           stats={[t("statsA"), t("statsB"), t("statsC")]}
+          videoUrl={settings?.heroVideoUrl ?? undefined}
+          videoPoster={
+            settings?.heroVideoPoster
+              ? urlFor(settings.heroVideoPoster).width(1200).height(800).quality(80).format("webp").url()
+              : undefined
+          }
         />
 
         {/* Rating strip */}
@@ -284,6 +195,8 @@ export default async function HomePage({ params }: HomePageProps) {
           </section>
         ) : null}
 
+        <InstagramStrip items={settings?.instagramFeed} />
+
         {/* Recent work preview */}
         {recent.length ? (
           <section className="pb-12">
@@ -350,14 +263,7 @@ export default async function HomePage({ params }: HomePageProps) {
 
       <MobileBookCta />
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesLd) }}
-      />
+      <HomeStructuredData ratingValue={ratingValue} reviewCount={agg.count} />
     </>
   );
 }

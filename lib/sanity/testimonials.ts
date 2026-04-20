@@ -1,5 +1,9 @@
 import { sanityClient } from "@/sanity/lib/client";
-import { aggregateRatingQuery, testimonialListQuery } from "@/sanity/lib/queries";
+import {
+  aggregateRatingQuery,
+  testimonialListQuery,
+  testimonialsForPieceQuery,
+} from "@/sanity/lib/queries";
 import { sanityEnv } from "@/sanity/env";
 
 export type Testimonial = {
@@ -27,6 +31,20 @@ export async function getTestimonials(): Promise<Testimonial[]> {
     const result = await sanityClient.fetch<Testimonial[]>(
       testimonialListQuery,
       {},
+      { next: { revalidate: 120 } }
+    );
+    return Array.isArray(result) ? result : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getTestimonialsForPiece(slug: string): Promise<Testimonial[]> {
+  if (!sanityEnv.isConfigured) return [];
+  try {
+    const result = await sanityClient.fetch<Testimonial[]>(
+      testimonialsForPieceQuery,
+      { slug },
       { next: { revalidate: 120 } }
     );
     return Array.isArray(result) ? result : [];
