@@ -291,6 +291,31 @@ export default async function HomePage({ params }: HomePageProps) {
             </div>
           </section>
         ) : null}
+        {/* Bottom CTA strip */}
+        <section className="pb-12">
+          <div className="section-card flex flex-col items-center gap-5 rounded-2xl px-6 py-10 text-center sm:flex-row sm:text-left">
+            <div className="flex-1 min-w-0">
+              <h2 className="section-title text-xl text-foreground sm:text-2xl">Ready to start your project?</h2>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Tell us your idea. Custom consultations are free — deposits hold your spot.
+              </p>
+            </div>
+            <div className="flex shrink-0 flex-wrap justify-center gap-3 sm:justify-end">
+              <Link
+                href="/booking"
+                className="electric-ring inline-flex touch-manipulation items-center justify-center rounded-full border border-electric px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.15em] text-foreground hover:text-electric"
+              >
+                Book now
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex touch-manipulation items-center justify-center rounded-full border border-border px-5 py-2.5 text-xs font-semibold uppercase tracking-[0.15em] text-muted-foreground hover:border-electric/40 hover:text-electric"
+              >
+                Send a message
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
 
       <MobileBookCta />
