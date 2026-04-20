@@ -18,6 +18,14 @@ export const siteSettingsQuery = groq`
   }
 `;
 
+export const faqItemsQuery = groq`
+  *[_type == "faqItem"] | order(order asc, _createdAt asc){
+    _id,
+    question,
+    answer
+  }
+`;
+
 export const sponsorPartnersQuery = groq`
   *[_type == "sponsorPartner" && active == true] | order(_createdAt asc){
     _id,
