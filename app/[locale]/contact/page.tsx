@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: ContactPageProps): Promise<Me
     description: "Send a booking inquiry or general message. Include your concept, placement, size, and reference images to get started.",
     alternates: { canonical: `${siteConfig.siteUrl}/${locale}/contact` },
     openGraph: {
-      title: "Contact Cody Meneley — Tattoo Booking Inquiry",
+      title: "Contact Sean E Bones — Tattoo Booking Inquiry",
       description: "Ready to start your project? Send your concept, placement, and reference images and we'll be in touch.",
       url: `${siteConfig.siteUrl}/${locale}/contact`,
     },

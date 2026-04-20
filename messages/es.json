@@ -1,13 +1,13 @@
 {
   "metadata": {
-    "title": "Cody Meneley | Artista del Tatuaje",
-    "description": "Trabajo premium de tatuaje con Cody Meneley. Tatuando desde 2004, artista patrocinado y especialista en black and grey."
+    "title": "Sean E Bones | Artista del Tatuaje",
+    "description": "Artista de tatuajes premiado desde 1999, formado con Troy \"Rabbit\" Fox. Publicado internacionalmente, arte premiado. Mansfield, TX — estudio privado, solo con cita."
   },
   "nav": {
     "home": "Inicio",
     "portfolio": "Portafolio",
     "artists": "Artistas",
-    "about": "Sobre Cody",
+    "about": "Sobre Sean",
     "booking": "Reservas",
     "aftercare": "Cuidados",
     "faq": "Preguntas",
@@ -16,14 +16,14 @@
     "contact": "Contacto"
   },
   "home": {
-    "eyebrow": "Tatuando Desde 2004",
-    "headline": "Tatuajes de Precisión con Sello Black and Grey",
-    "subheadline": "Cody Meneley ofrece trabajo limpio y profesional en todos los estilos, con enfoque especializado en black and grey realista y de detalle.",
+    "eyebrow": "Tatuajes por Sean E Bones",
+    "headline": "Tatuaje galardonado, con décadas en el oficio",
+    "subheadline": "Sean E. Bones es un artista de tatuajes premiado con más de 25 años de experiencia profesional en el sector. Desde que comenzó su carrera en 1999, se ha ganado una reputación por tatuajes de alta calidad y gran dominio técnico, con raíces en los estándares de aprendizaje tradicional.\n\nFormado originalmente con el reconocido artista Troy \"Rabbit\" Fox en Fort Worth y Duncanville, Texas, Sean ha perfeccionado su oficio en varios estados, entre ellos Texas, Nuevo México, Missouri y Kansas. Su trabajo se ha publicado a nivel internacional y ha obtenido reconocimiento en eventos competitivos de tatuaje.\n\nHoy con base en Mansfield, Texas, Sean trabaja solo con cita previa, para que cada cliente reciba el tiempo, la concentración y la atención que su proyecto merece. Se especializa en tatuajes personalizados y ofrece consultas para revisar ideas, referencias y el plan de diseño con detalle.\n\nComprometido con el profesionalismo y la satisfacción del cliente, Sean sigue ofreciendo tatuajes excepcionales en un entorno de estudio privado en Mansfield, TX.",
     "ctaBooking": "Reservar Consulta",
     "ctaPortfolio": "Ver Portafolio",
-    "statsA": "20+ Años de Trayectoria",
-    "statsB": "Todos los Estilos",
-    "statsC": "Artista Patrocinado"
+    "statsA": "Desde 1999",
+    "statsB": "Publicado internacionalmente, arte premiado",
+    "statsC": "Mansfield — solo cita"
   },
   "booking": {
     "title": "Reserva una Cita",
@@ -41,7 +41,7 @@
     "emptyEnv": "O define NEXT_PUBLIC_BOOKING_URL y NEXT_PUBLIC_DEPOSIT_URL en .env.local / Vercel (luego redeploy)."
   },
   "contact": {
-    "title": "Contacta a Cody",
+    "title": "Contacta a Sean",
     "description": "Cuéntame tu idea, ubicación, tamaño y tiempos."
   },
   "common": {

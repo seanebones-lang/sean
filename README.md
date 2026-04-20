@@ -1,6 +1,6 @@
-# Cody Meneley Tattoo Site
+# Sean E Bones — Tattoo Site
 
-Premium multilingual web presence for Cody Meneley, built with Next.js 16 App Router.
+Multilingual web presence for **Sean E Bones** (*Tattoos by Sean E Bones*), built with Next.js 16 App Router.
 
 ## Stack
 
@@ -25,40 +25,37 @@ Open `http://localhost:3000`.
 Copy `.env.example` to `.env.local` and fill required values:
 
 - `NEXT_PUBLIC_SITE_URL`
-- `NEXT_PUBLIC_BOOKING_URL` (scheduler embed URL)
-- `NEXT_PUBLIC_DEPOSIT_URL` (Stripe Payment Link, Square, etc.)
-- `NEXT_PUBLIC_SANITY_PROJECT_ID`
-- `NEXT_PUBLIC_SANITY_DATASET`
-- `NEXT_PUBLIC_SANITY_API_VERSION`
+- `NEXT_PUBLIC_BOOKING_URL` (PrimeCraft / scheduler embed URL)
+- `NEXT_PUBLIC_DEPOSIT_URL` (optional — Stripe Payment Link, Square, etc.)
+- `NEXT_PUBLIC_SANITY_PROJECT_ID` (default in `.env.example`: `7sodez5h`)
+- `NEXT_PUBLIC_SANITY_DATASET`, `NEXT_PUBLIC_SANITY_API_VERSION`
 - `SANITY_API_TOKEN`
-- `RESEND_API_KEY`
-- `RESEND_FROM_EMAIL`
+- `RESEND_API_KEY`, `RESEND_FROM_EMAIL` (verified sender in Resend; typically `seanebones@gmail.com`)
+- `CONTACT_INBOX_EMAIL` (where form submissions are delivered; typically `nextelevenstudios@gmail.com`)
+
+Public contact shown on the site comes from [`lib/site.ts`](lib/site.ts) (`seanebones@gmail.com`) unless overridden in Sanity **Site Settings → Contact Email**. Leave that Sanity field empty or set it to the same address if you do not want the studio inbox shown publicly.
+
+For Sanity Studio, copy [`sanity/.env.example`](sanity/.env.example) to `sanity/.env`.
 
 ## Scripts
 
-- `npm run dev` - start Next.js dev server
-- `npm run build` - production build
-- `npm run lint` - run ESLint
-- `npm run studio` - run Sanity Studio (npm workspace `sanity/`; requires `sanity/package.json` and `sanity/.env` with `NEXT_PUBLIC_SANITY_*` vars)
+- `npm run dev` — start Next.js dev server
+- `npm run build` — production build
+- `npm run lint` — run ESLint
+- `npm run studio` — run Sanity Studio (`sanity/.env` with `SANITY_STUDIO_*` vars)
 
 ## Booking and deposits
 
-The **Booking** page can show two things:
+The **Booking** page can show:
 
 1. **Schedule** — an embedded iframe when `bookingUrl` is set (Sanity **Site Settings** overrides `NEXT_PUBLIC_BOOKING_URL`).
-2. **Deposit** — a prominent “Pay deposit” button when `depositPaymentUrl` is set (Sanity **Site Settings** overrides `NEXT_PUBLIC_DEPOSIT_URL`). Payment always opens in a **new tab** (Stripe/Square checkout is not embedded).
+2. **Deposit** — a “Pay deposit” button when `depositPaymentUrl` is set (Sanity **Site Settings** overrides `NEXT_PUBLIC_DEPOSIT_URL`). Checkout opens in a **new tab**.
 
-**Typical setups**
-
-- **Cal.com** (or similar): create an event type, turn on **paid bookings** if you want deposit-at-booking, then use the **embed** URL for `bookingUrl`.
-- **Calendly**: use the embed link for the event; add **Stripe** in Calendly for paid events, or keep a separate **Stripe Payment Link** for flat deposits in `depositPaymentUrl`.
-- **Square / Booksy / GlossGenius**: use the provider’s **embed or booking page URL** for `bookingUrl`; use their **invoice or payment link** for deposits if it is a separate HTTPS URL.
-- **Stripe only for deposit**: [Stripe Payment Links](https://docs.stripe.com/payment-links) → copy the `https://buy.stripe.com/...` URL into Sanity or `NEXT_PUBLIC_DEPOSIT_URL`.
+If the scheduler blocks iframes, use **Open booking in a new tab** on the booking page.
 
 After changing Sanity fields, the page refreshes within about a minute (ISR). After changing env vars on Vercel, **redeploy**.
 
 ## Notes
 
 - Booking / deposit URLs are merged from **Sanity Site Settings** first, then env fallbacks.
-- Contact form is configured as form-first; no visible public mailto by default.
-- Sanity schemas are scaffolded for artists, portfolio, sponsors, FAQ, policies, testimonials, and site settings.
+- Contact form sends from `RESEND_FROM_EMAIL` to `CONTACT_INBOX_EMAIL` (fallback: public email in `lib/site.ts`).

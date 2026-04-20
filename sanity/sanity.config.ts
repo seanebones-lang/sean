@@ -6,7 +6,7 @@ import { schemaTypes } from "./schemaTypes";
 
 export default defineConfig({
   name: "default",
-  title: "Cody Meneley Studio",
+  title: "Sean E Bones Studio",
   projectId: sanityEnv.projectId as string,
   dataset: (sanityEnv.dataset ?? "production") as string,
   schema: {

@@ -17,7 +17,8 @@ export const siteSettingsType = defineType({
       title: "Footer Bio",
       type: "text",
       rows: 3,
-      description: "Short bio shown in the site footer (e.g., 'Tattooing since 2004...').",
+      description:
+        "Short bio shown in the site footer (e.g., 'Tattooing professionally since 1999 — Mansfield, TX, by appointment.').",
     }),
     defineField({ name: "bookingUrl", title: "Booking URL", type: "url" }),
     defineField({

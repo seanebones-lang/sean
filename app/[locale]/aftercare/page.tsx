@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: AftercarePageProps): Promise<
     description: "Step-by-step tattoo aftercare instructions. How to wash, moisturize, and protect your tattoo for the best healed result.",
     alternates: { canonical: `${siteConfig.siteUrl}/${locale}/aftercare` },
     openGraph: {
-      title: "Tattoo Aftercare Guide — Cody Meneley",
+      title: "Tattoo Aftercare Guide — Sean E Bones",
       description: "Take-home aftercare steps to keep your tattoo healing cleanly. Printable format included.",
       url: `${siteConfig.siteUrl}/${locale}/aftercare`,
     },

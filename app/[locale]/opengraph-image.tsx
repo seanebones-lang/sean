@@ -3,7 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { siteConfig } from "@/lib/site";
 
 export const runtime = "edge";
-export const alt = "Cody Meneley — Premium Tattoo Craftsmanship";
+export const alt = "Sean E Bones — Tattoos by Sean E Bones";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -82,7 +82,7 @@ export default async function OgImage({ params }: Props) {
             color: "#b0b6c2",
           }}
         >
-          <div>Black & Grey • Realism • Fine Line • Custom</div>
+          <div>Mansfield, TX • Since 1999 • Internationally published, award winning art</div>
           <div style={{ color: "#21c7ff", fontWeight: 700 }}>Book a consultation →</div>
         </div>
       </div>

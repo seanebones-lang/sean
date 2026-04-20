@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import Link from "next/link";
 
 export default function GlobalError({
   error,
@@ -32,7 +33,7 @@ export default function GlobalError({
           <p style={{ marginTop: 12, color: "#b0b6c2" }}>
             An unexpected error occurred. Please reload the page or try again shortly.
           </p>
-          <a
+          <Link
             href="/"
             style={{
               display: "inline-block",
@@ -48,7 +49,7 @@ export default function GlobalError({
             }}
           >
             Return home
-          </a>
+          </Link>
         </div>
       </body>
     </html>

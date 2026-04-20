@@ -34,7 +34,7 @@ export async function generateMetadata({
   return {
     title: {
       default: t("title"),
-      template: `%s | Cody Meneley`,
+      template: `%s | Sean E Bones`,
     },
     description: t("description"),
     metadataBase: new URL(siteConfig.siteUrl),
@@ -43,7 +43,7 @@ export async function generateMetadata({
       description: t("description"),
       type: "website",
       url: `/${locale}`,
-      siteName: "Cody Meneley — Tattoo Artist",
+      siteName: "Sean E Bones — Tattoo Artist",
       locale: locale === "es" ? "es_ES" : "en_US",
     },
     twitter: {

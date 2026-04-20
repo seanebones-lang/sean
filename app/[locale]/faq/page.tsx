@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: FaqPageProps): Promise<Metada
     description: "Common questions about booking, pricing, styles, consultation, and preparing for your tattoo appointment.",
     alternates: { canonical: `${siteConfig.siteUrl}/${locale}/faq` },
     openGraph: {
-      title: "FAQ — Cody Meneley Tattoo Artist",
+      title: "FAQ — Sean E Bones Tattoo Artist",
       description: "Booking, pricing, aftercare, cover-ups — quick answers to the questions we hear most.",
       url: `${siteConfig.siteUrl}/${locale}/faq`,
     },
@@ -33,8 +33,9 @@ const fallbackFaqs = [
     answer: "Yes. Most projects start with a consultation to confirm concept, placement, sizing, and session structure.",
   },
   {
-    question: "Can I book black and grey realism?",
-    answer: "Absolutely. Black and grey work is a core specialty and highlighted in the portfolio queue.",
+    question: "What styles do you tattoo?",
+    answer:
+      "Sean works across many styles — black and grey, color, fine line, traditional, lettering, and custom pieces. Bring references and we will map the best approach for your idea.",
   },
   {
     question: "Do you tattoo over scars or cover old work?",
@@ -42,7 +43,8 @@ const fallbackFaqs = [
   },
   {
     question: "How much does a tattoo cost?",
-    answer: "Pricing varies by size, complexity, and session time. Contact us for a quote — deposits are required to hold appointments.",
+    answer:
+      "Pricing depends on size, complexity, placement, and session length. You will get a clear quote after consultation — deposits are required to hold appointments.",
   },
   {
     question: "How do I prepare for my appointment?",
@@ -54,7 +56,8 @@ const fallbackFaqs = [
   },
   {
     question: "Do you accept walk-ins?",
-    answer: "Custom work is booked in advance through the booking portal. Check availability there or use the contact form to inquire.",
+    answer:
+      "Sean is appointment only. Use the booking portal to request a time or send a message through the contact form with your idea and timeline.",
   },
   {
     question: "Can I bring my own reference images?",

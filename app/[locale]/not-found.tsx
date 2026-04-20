@@ -8,7 +8,7 @@ export default function LocaleNotFound() {
         Page not found
       </h1>
       <p className="mt-3 text-muted-foreground">
-        The page you're looking for doesn't exist, or the artwork has moved. Browse the portfolio
+        The page you are looking for does not exist, or the artwork has moved. Browse the portfolio
         or head home.
       </p>
       <div className="mt-6 flex flex-wrap items-center justify-center gap-3">

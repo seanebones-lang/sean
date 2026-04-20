@@ -116,10 +116,13 @@ export async function submitContact(
   const resend = new Resend(apiKey);
   const from = process.env.RESEND_FROM_EMAIL ?? "Tattoo Site <onboarding@resend.dev>";
 
+  const inbox =
+    process.env.CONTACT_INBOX_EMAIL?.trim() || siteConfig.email;
+
   try {
     await resend.emails.send({
       from,
-      to: siteConfig.email,
+      to: inbox,
       replyTo: d.email,
       subject: `New consultation request from ${d.name}`,
       text: lines.join("\n"),
@@ -131,5 +134,8 @@ export async function submitContact(
     };
   }
 
-  return { success: true, message: "Message sent. Cody will get back to you soon." };
+  return {
+    success: true,
+    message: "Message sent. Sean will get back to you soon.",
+  };
 }

@@ -58,7 +58,10 @@ export function ImageGallery({ images, healedUrl, title }: ImageGalleryProps) {
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (touchStart.current === null) return;
     const diff = (e.changedTouches[0]?.clientX ?? 0) - touchStart.current;
-    if (Math.abs(diff) > 40) diff < 0 ? next() : prev();
+    if (Math.abs(diff) > 40) {
+      if (diff < 0) next();
+      else prev();
+    }
     touchStart.current = null;
   };
 

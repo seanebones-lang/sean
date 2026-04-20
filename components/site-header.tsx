@@ -49,7 +49,7 @@ export function SiteHeader() {
             href="/"
             className="section-title min-w-0 shrink text-lg text-foreground min-[400px]:text-xl sm:text-2xl"
           >
-            <span className="block truncate">Cody Meneley</span>
+            <span className="block truncate">Sean E Bones</span>
           </Link>
 
           <nav className="hidden items-center gap-4 lg:flex" aria-label="Primary">

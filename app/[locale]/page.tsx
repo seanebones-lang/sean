@@ -83,22 +83,32 @@ export default async function HomePage({ params }: HomePageProps) {
     description: siteConfig.description,
     knowsAbout: [
       "Tattoo",
-      "Black and grey tattoo",
-      "Tattoo design",
-      "Realism tattoo",
+      "Custom tattoo",
+      "Award-winning tattoo",
+      "Internationally published tattoo art",
       "Fine line tattoo",
     ],
     hasOccupation: {
       "@type": "Occupation",
       name: "Tattoo Artist",
-      occupationLocation: { "@type": "Country", name: "United States" },
+      startDate: "1999",
+      occupationLocation: {
+        "@type": "Place",
+        name: "Mansfield",
+        containedInPlace: { "@type": "AdministrativeArea", name: "Texas" },
+      },
     },
     additionalType: "https://schema.org/ProfessionalService",
     priceRange: "$$",
     currenciesAccepted: "USD",
     paymentAccepted: "Cash, Credit Card",
-    openingHours: "By appointment",
-    areaServed: "United States",
+    openingHours: "By appointment only",
+    areaServed: [
+      { "@type": "AdministrativeArea", name: "Texas" },
+      { "@type": "AdministrativeArea", name: "New Mexico" },
+      { "@type": "AdministrativeArea", name: "Missouri" },
+      { "@type": "AdministrativeArea", name: "Kansas" },
+    ],
   };
 
   if (ratingValue && agg.count > 0) {
@@ -129,8 +139,9 @@ export default async function HomePage({ params }: HomePageProps) {
         "@type": "Offer",
         itemOffered: {
           "@type": "Service",
-          name: "Black and Grey Realism",
-          description: "Tonal realism work with depth and contrast — portraits, illustrative, and detailed compositions.",
+          name: "Black & grey and color work",
+          description:
+            "Versatile tonal and color tattooing — from fine line and lettering to realism and custom illustrative pieces.",
         },
       },
       {
@@ -197,16 +208,16 @@ export default async function HomePage({ params }: HomePageProps) {
         <section className="grid min-w-0 gap-4 pb-10 min-[480px]:pb-12 md:grid-cols-3">
           {[
             {
-              title: "Black and Grey Specialty",
-              body: "Depth-focused tonal work for realism, portraits, and bold contrast pieces.",
+              title: "Since 1999",
+              body: 'Decades of professional tattooing, rooted in a classic apprenticeship under Troy "Rabbit" Fox in Fort Worth and Duncanville, Texas.',
             },
             {
-              title: "Full Style Coverage",
-              body: "Fine line, script, illustrative, traditional, realism, and custom composition.",
+              title: "Internationally published, award winning art",
+              body: "Recognition in competitive tattoo events and editorial features — with years of work across Texas, New Mexico, Missouri, and Kansas.",
             },
             {
-              title: "Professional Process",
-              body: "Consultation-first approach, clean studio standards, and clear healing guidance.",
+              title: "Mansfield — appointment only",
+              body: "Sean is based in Mansfield, Texas today. New projects are scheduled by appointment so every client gets proper time and attention.",
             },
           ].map((item) => (
             <article key={item.title} className="section-card rounded-xl p-5">
@@ -316,7 +327,7 @@ export default async function HomePage({ params }: HomePageProps) {
             <div className="flex-1 min-w-0">
               <h2 className="section-title text-xl text-foreground sm:text-2xl">Ready to start your project?</h2>
               <p className="mt-2 text-sm text-muted-foreground">
-                Tell us your idea. Custom consultations are free — deposits hold your spot.
+                Tell Sean your idea. Consultations clarify the plan — deposits hold your spot once you are ready to book.
               </p>
             </div>
             <div className="flex shrink-0 flex-wrap justify-center gap-3 sm:justify-end">

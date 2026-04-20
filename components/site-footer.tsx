@@ -15,7 +15,7 @@ export async function SiteFooter() {
 
   const bio =
     settings?.footerBio?.trim() ||
-    "Tattooing since 2004. Sponsored artist. Black and grey specialist.";
+    "Tattoos by Sean E Bones — professional tattooing in Mansfield, TX. Book online and bring your best references.";
   const instagram = settings?.instagramUrl?.trim() || siteConfig.instagram;
   const facebook = settings?.facebookUrl?.trim() || siteConfig.facebook;
   const tiktok = settings?.tiktokUrl?.trim();

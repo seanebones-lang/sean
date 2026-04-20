@@ -15,10 +15,10 @@ export async function generateMetadata({ params }: TestimonialsPageProps): Promi
   const { locale } = await params;
   return {
     title: "Testimonials",
-    description: "What clients say about their experience with Cody Meneley — quality, process, and long-term results.",
+    description: "What clients say about their experience with Sean E Bones — quality, process, and long-term results.",
     alternates: { canonical: `${siteConfig.siteUrl}/${locale}/testimonials` },
     openGraph: {
-      title: "Client Testimonials — Cody Meneley",
+      title: "Client Testimonials — Sean E Bones",
       description: "Genuine client feedback on tattoo quality, the booking process, and healing results.",
       url: `${siteConfig.siteUrl}/${locale}/testimonials`,
     },
@@ -29,7 +29,7 @@ const fallbackTestimonials = [
   {
     _id: "f1",
     quote:
-      "Cleanest black and grey work I have ever had done. The session was efficient and professional.",
+      "Incredible line quality and a calm, professional session from start to finish. Healing was straightforward with his aftercare notes.",
     name: "A. R.",
     rating: 5,
     clientLocation: null,
@@ -43,7 +43,7 @@ const fallbackTestimonials = [
   {
     _id: "f2",
     quote:
-      "Cody translated my rough concept into a strong final design and made the whole process smooth.",
+      "Sean translated my rough concept into a strong final design and made the whole process smooth.",
     name: "M. T.",
     rating: 5,
     clientLocation: null,

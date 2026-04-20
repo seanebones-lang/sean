@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: PoliciesPageProps): Promise<M
     description: "Booking policies covering deposits, cancellations, pricing, health requirements, and touch-up coverage.",
     alternates: { canonical: `${siteConfig.siteUrl}/${locale}/policies` },
     openGraph: {
-      title: "Studio Policies — Cody Meneley",
+      title: "Studio Policies — Sean E Bones",
       description: "Deposit, cancellation, and studio policies. Read before booking your appointment.",
       url: `${siteConfig.siteUrl}/${locale}/policies`,
     },
@@ -95,8 +95,7 @@ export default async function PoliciesPage({ params }: PoliciesPageProps) {
 
       <p className="mt-6 text-sm text-muted-foreground">
         Questions about these policies?{" "}
-        <Link href="/contact" className="text-electric hover:underline">Contact us</Link>{" "}
-        before booking.
+        <Link href="/contact" className="text-electric hover:underline">Message Sean</Link> before booking.
       </p>
     </PageShell>
   );

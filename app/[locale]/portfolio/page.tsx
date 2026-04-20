@@ -14,10 +14,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   return {
     title: "Portfolio",
-    description: "Browse the full tattoo portfolio — black and grey, fine line, realism, illustrative, and custom styles. Filter by style to find your inspiration.",
+    description:
+      "Browse tattoo work by Sean E Bones — custom pieces across black and grey, color, fine line, traditional, and more. Filter by style for inspiration.",
     alternates: { canonical: `${siteConfig.siteUrl}/${locale}/portfolio` },
     openGraph: {
-      title: "Tattoo Portfolio — Cody Meneley",
+      title: "Tattoo Portfolio — Sean E Bones",
       description: "Custom tattoos across all styles. Browse completed work and find your next piece.",
       url: `${siteConfig.siteUrl}/${locale}/portfolio`,
     },
@@ -37,7 +38,7 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
   const fetchError = portfolio.ok ? undefined : portfolio.error;
 
   const description = pieces.length
-    ? `${pieces.length} piece${pieces.length === 1 ? "" : "s"} from the studio. Click any piece to view full detail and all images.`
+    ? `${pieces.length} piece${pieces.length === 1 ? "" : "s"} in the portfolio. Click any piece to view full detail and all images.`
     : fetchError
       ? "We could not load portfolio content from Sanity."
       : sanityEnv.isConfigured

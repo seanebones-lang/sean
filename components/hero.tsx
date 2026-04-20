@@ -1,22 +1,8 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import Image from "next/image";
 import { motion, useReducedMotion } from "motion/react";
 import { Link } from "@/i18n/navigation";
-import { useEffect, useState } from "react";
-
-const HeroCanvas = dynamic(
-  () => import("./hero-canvas").then((module) => module.HeroCanvas),
-  { ssr: false }
-);
-
-function CanvasPlaceholder() {
-  return (
-    <div className="relative h-[min(42dvh,20rem)] w-full min-h-[200px] touch-none rounded-2xl border border-border bg-gradient-to-b from-surface/80 to-black min-[480px]:h-[min(44dvh,22rem)] md:h-[320px] md:min-h-[320px]">
-      <div className="absolute inset-0 rounded-2xl bg-[radial-gradient(ellipse_at_60%_40%,#21c7ff14_0%,transparent_70%)]" />
-    </div>
-  );
-}
 
 type HeroProps = {
   eyebrow: string;
@@ -36,17 +22,6 @@ export function Hero({
   stats,
 }: HeroProps) {
   const reduced = useReducedMotion();
-  const [canvasReady, setCanvasReady] = useState(false);
-
-  useEffect(() => {
-    if (reduced) return;
-    if (typeof window !== "undefined" && "requestIdleCallback" in window) {
-      const id = requestIdleCallback(() => setCanvasReady(true), { timeout: 1200 });
-      return () => cancelIdleCallback(id);
-    }
-    const t = setTimeout(() => setCanvasReady(true), 600);
-    return () => clearTimeout(t);
-  }, [reduced]);
 
   return (
     <section className="grid min-w-0 gap-8 py-8 min-[480px]:py-12 md:grid-cols-[1.2fr_1fr] md:py-16">
@@ -59,9 +34,15 @@ export function Hero({
         <h1 className="section-title mt-3 break-words text-[clamp(2.25rem,8vw,3.75rem)] leading-[0.92] text-foreground min-[480px]:mt-4">
           {headline}
         </h1>
-        <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground min-[480px]:mt-5 min-[480px]:text-lg min-[480px]:leading-8">
-          {subheadline}
-        </p>
+        <div className="mt-4 max-w-2xl space-y-4 text-base leading-relaxed text-muted-foreground min-[480px]:mt-5 min-[480px]:text-lg min-[480px]:leading-8">
+          {subheadline
+            .split(/\n\n+/)
+            .map((p) => p.trim())
+            .filter(Boolean)
+            .map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+        </div>
 
         <div className="mt-6 flex w-full min-w-0 flex-col gap-3 min-[420px]:flex-row min-[420px]:flex-wrap sm:mt-8">
           <Link
@@ -91,8 +72,22 @@ export function Hero({
         initial={reduced ? undefined : { opacity: 0, scale: 0.98 }}
         animate={reduced ? undefined : { opacity: 1, scale: 1 }}
         transition={{ duration: 0.55, ease: "easeOut", delay: 0.12 }}
+        className="relative min-h-0"
       >
-        {canvasReady ? <HeroCanvas /> : <CanvasPlaceholder />}
+        <div className="relative h-[min(42dvh,20rem)] w-full min-h-[200px] overflow-hidden rounded-2xl border border-border bg-gradient-to-b from-surface/80 to-black min-[480px]:h-[min(44dvh,22rem)] md:h-[320px] md:min-h-[320px]">
+          <div
+            className="pointer-events-none absolute inset-0 z-[1] rounded-2xl bg-[radial-gradient(ellipse_at_60%_40%,#21c7ff14_0%,transparent_70%)]"
+            aria-hidden
+          />
+          <Image
+            src="/sean-hero.jpg"
+            alt="Sean E. Bones"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 40vw"
+            className="object-cover object-center"
+          />
+        </div>
       </motion.div>
     </section>
   );

@@ -18,10 +18,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   return {
     title: "Artists",
-    description: "Meet the artists at the studio. Browse specialties, view portfolios, and check booking availability.",
+    description:
+      "Artist profiles for Tattoos by Sean E Bones. Browse bios, specialties, portfolios, and booking availability.",
     alternates: { canonical: `${siteConfig.siteUrl}/${locale}/artists` },
     openGraph: {
-      title: "Tattoo Artists — Cody Meneley Studio",
+      title: "Tattoo Artists — Sean E Bones Studio",
       description: "Browse artists, their styles, specialties, and current booking availability.",
       url: `${siteConfig.siteUrl}/${locale}/artists`,
     },

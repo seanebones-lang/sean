@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Cody Meneley | Tattoo Artist",
-    "description": "Premium tattoo craftsmanship by Cody Meneley. Tattooing since 2004, sponsored artist, with a black and grey specialty."
+    "title": "Sean E Bones | Tattoo Artist",
+    "description": "Award-winning tattoo artist since 1999, trained under Troy \"Rabbit\" Fox. Internationally published, award winning art. Mansfield, TX — private studio, by appointment."
   },
   "nav": {
     "home": "Home",
@@ -16,14 +16,14 @@
     "contact": "Contact"
   },
   "home": {
-    "eyebrow": "Tattooing Since 2004",
-    "headline": "Precision Tattooing with a Black and Grey Signature",
-    "subheadline": "Cody Meneley delivers clean, professional tattoo work across all styles, with a specialized focus on black and grey realism and detail.",
+    "eyebrow": "Tattoos by Sean E Bones",
+    "headline": "Award winning tattooing, with decades in the trade",
+    "subheadline": "Sean E. Bones is an award-winning tattoo artist with over 25 years of professional experience in the industry. Since beginning his career in 1999, he has established a reputation for high-quality, technically proficient tattooing rooted in traditional apprenticeship standards.\n\nOriginally trained under respected artist Troy \"Rabbit\" Fox in Fort Worth and Duncanville, Texas, Sean has honed his craft across multiple states, including Texas, New Mexico, Missouri, and Kansas. His work has been internationally published and has earned recognition in competitive tattoo events.\n\nNow based in Mansfield, Texas, Sean operates by appointment only, ensuring each client receives the time, focus, and attention their project deserves. He specializes in creating custom tattoos and welcomes consultations to discuss ideas, references, and design plans in detail.\n\nCommitted to professionalism and client satisfaction, Sean continues to deliver exceptional tattoo artistry in a private studio setting in Mansfield, TX.",
     "ctaBooking": "Book Consultation",
     "ctaPortfolio": "View Portfolio",
-    "statsA": "20+ Years Craft",
-    "statsB": "All Styles Welcome",
-    "statsC": "Sponsored Artist"
+    "statsA": "Since 1999",
+    "statsB": "Internationally published, award winning art",
+    "statsC": "Mansfield — appointment only"
   },
   "booking": {
     "title": "Book an Appointment",
@@ -41,7 +41,7 @@
     "emptyEnv": "Or set NEXT_PUBLIC_BOOKING_URL and NEXT_PUBLIC_DEPOSIT_URL in .env.local / Vercel (then redeploy)."
   },
   "contact": {
-    "title": "Contact Cody",
+    "title": "Contact Sean",
     "description": "Tell me about your idea, placement, size, and timeline."
   },
   "common": {

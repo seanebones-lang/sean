@@ -10,14 +10,24 @@ const personLd = {
   name: siteConfig.name,
   url: siteConfig.siteUrl,
   email: siteConfig.email,
-  description: "Tattoo artist tattooing professionally since 2004. Sponsored artist specializing in black and grey realism, fine line, and custom illustrative work.",
-  knowsAbout: ["Tattoo", "Black and grey realism", "Fine line tattoo", "Cover-up tattoo", "Custom illustrative tattoo"],
+  description:
+    "Tattoo artist since 1999; apprenticed under Troy \"Rabbit\" Fox in Fort Worth and Duncanville, Texas. Internationally published, award winning art. Based in Mansfield, Texas — appointment only.",
+  knowsAbout: [
+    "Tattoo",
+    "Custom tattoo",
+    "Internationally published tattoo art",
+    "Award winning tattoo art",
+  ],
   hasOccupation: {
     "@type": "Occupation",
     name: "Tattoo Artist",
-    startDate: "2004",
-    occupationLocation: { "@type": "Country", name: "United States" },
-    skills: "Black and grey realism, fine line, script, illustrative, traditional, cover-ups",
+    startDate: "1999",
+    occupationLocation: {
+      "@type": "Place",
+      name: "Mansfield",
+      containedInPlace: { "@type": "AdministrativeArea", name: "Texas" },
+    },
+    skills: "Custom tattooing across multiple styles; career work in Texas, New Mexico, Missouri, and Kansas",
   },
   sameAs: [siteConfig.instagram, siteConfig.facebook].filter(Boolean),
 };
@@ -29,22 +39,24 @@ type AboutPageProps = {
 export async function generateMetadata({ params }: AboutPageProps): Promise<Metadata> {
   const { locale } = await params;
   return {
-    title: "About Cody Meneley",
-    description: "Tattooing professionally since 2004. Sponsored artist specializing in black and grey realism, fine line, and custom illustrative work.",
+    title: "About Sean E Bones",
+    description:
+      "Sean E Bones has tattooed professionally since 1999, apprenticed under Troy \"Rabbit\" Fox, and creates internationally published, award winning art — now based in Mansfield, TX — appointment only.",
     alternates: { canonical: `${siteConfig.siteUrl}/${locale}/about` },
     openGraph: {
-      title: "About Cody Meneley",
-      description: "20+ years of professional tattooing. Sponsored artist, black and grey specialist, custom designs.",
+      title: "About Sean E Bones",
+      description:
+        "From Fort Worth and Duncanville roots to Mansfield today — internationally published, award winning art, by appointment.",
       url: `${siteConfig.siteUrl}/${locale}/about`,
     },
   };
 }
 
 const stats = [
-  { value: "20+", label: "Years tattooing" },
-  { value: "3,000+", label: "Pieces completed" },
-  { value: "2004", label: "Tattooing since" },
-  { value: "Sponsored", label: "Artist status" },
+  { value: "1999", label: "Tattooing professionally since" },
+  { value: "Internationally published", label: "Award winning art" },
+  { value: "TX · NM · MO · KS", label: "States Sean has tattooed in" },
+  { value: "Mansfield", label: "Texas — appointment only" },
 ];
 
 const workflow = [
@@ -79,6 +91,9 @@ const specialties = [
   "Cover-ups & reworks",
 ];
 
+const aboutIntro =
+  "Sean has been tattooing professionally since 1999. He apprenticed under Troy \"Rabbit\" Fox in Fort Worth and Duncanville, Texas. He is an internationally published, award-winning artist who has tattooed in Texas, New Mexico, Missouri, and Kansas. He is currently based in Mansfield, Texas, and is available by appointment only.";
+
 export default async function AboutPage({ params }: AboutPageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -89,10 +104,7 @@ export default async function AboutPage({ params }: AboutPageProps) {
       type="application/ld+json"
       dangerouslySetInnerHTML={{ __html: JSON.stringify(personLd) }}
     />
-    <PageShell
-      title="About Cody"
-      description="Cody Meneley has tattooed professionally since 2004. Sponsored artist, versatile across styles, with black and grey as a signature specialty."
-    >
+    <PageShell title="About Sean" description={aboutIntro}>
       {/* By the numbers */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         {stats.map((s) => (
@@ -106,19 +118,22 @@ export default async function AboutPage({ params }: AboutPageProps) {
       {/* About text */}
       <div className="mt-8 grid gap-4 md:grid-cols-2">
         <article className="section-card rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-foreground">Craft First</h2>
+          <h2 className="text-xl font-semibold text-foreground">Apprenticeship & roots</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            Every project begins with concept refinement, placement planning, and a composition
-            strategy that fits your body and long-term vision. The goal isn't just a tattoo that
-            looks great on day one — it's artwork that ages with you.
+            Sean learned the trade under{" "}
+            <span className="text-foreground">Troy &quot;Rabbit&quot; Fox</span> in Fort Worth and
+            Duncanville, Texas — a foundation in classic shop discipline, client care, and
+            technical fundamentals he still carries into every session.
           </p>
         </article>
         <article className="section-card rounded-xl p-6">
-          <h2 className="text-xl font-semibold text-foreground">All Styles Welcome</h2>
+          <h2 className="text-xl font-semibold text-foreground">Today in Mansfield</h2>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            Fine line, realism, script, traditional, illustrative, and custom hybrids are all
-            part of the workflow. The common thread is clean execution and intentional design —
-            not chasing trends, but building pieces with longevity.
+            After years of tattooing across Texas, New Mexico, Missouri, and Kansas, Sean is
+            settled in Mansfield, Texas. His work has been published internationally and recognized
+            in competition — and he takes new projects{" "}
+            <span className="text-foreground">by appointment only</span>, so every booking gets the
+            time and attention it deserves.
           </p>
         </article>
       </div>

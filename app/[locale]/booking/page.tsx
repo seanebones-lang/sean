@@ -18,7 +18,7 @@ export async function generateMetadata({ params }: BookingPageProps): Promise<Me
     description: "Schedule a tattoo appointment or submit a booking inquiry. Custom designs, consultations, and deposits handled here.",
     alternates: { canonical: `${siteConfig.siteUrl}/${locale}/booking` },
     openGraph: {
-      title: "Book a Tattoo — Cody Meneley",
+      title: "Book a Tattoo — Sean E Bones",
       description: "Ready to get tattooed? Book your appointment, submit a deposit, or reach out with your concept.",
       url: `${siteConfig.siteUrl}/${locale}/booking`,
     },
@@ -118,7 +118,10 @@ export default async function BookingPage({ params }: BookingPageProps) {
         <h2 className="section-title text-sm text-muted-foreground">Common questions</h2>
         <dl className="mt-3 grid gap-3 sm:grid-cols-2">
           {[
-            { q: "How much does a tattoo cost?", a: "Pricing depends on size, complexity, and placement. Minimum is $100. Custom pieces are quoted after your consultation." },
+            {
+              q: "How much does a tattoo cost?",
+              a: "Every piece is quoted after we review size, style, and placement. You will get a clear estimate at consultation before you commit.",
+            },
             { q: "How big is the deposit?", a: "Deposits are typically $50–$200 depending on project scope. This is deducted from your final session price." },
             { q: "Can I get a custom design?", a: "Yes — all custom work is discussed at consultation. You'll see the design before we book your session." },
             { q: "What should I bring?", a: "Arrive clean, hydrated, and having eaten. Wear or bring loose clothing that gives access to the tattoo area." },
@@ -133,7 +136,7 @@ export default async function BookingPage({ params }: BookingPageProps) {
           More questions?{" "}
           <Link href="/faq" className="text-electric hover:underline">Read the full FAQ</Link>
           {" or "}
-          <Link href="/contact" className="text-electric hover:underline">contact us directly</Link>.
+          <Link href="/contact" className="text-electric hover:underline">message Sean directly</Link>.
         </p>
       </div>
     </PageShell>

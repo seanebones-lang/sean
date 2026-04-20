@@ -1,12 +1,25 @@
+function normalizeSiteUrl(value: string | undefined): string {
+  const raw = (value ?? "").trim();
+  if (!raw) return "http://localhost:3000";
+
+  const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+
+  try {
+    return new URL(withProtocol).toString().replace(/\/$/, "");
+  } catch {
+    return "http://localhost:3000";
+  }
+}
+
 export const siteConfig = {
-  name: "Cody Meneley",
+  name: "Sean E Bones",
   description:
-    "Premium tattoo craftsmanship by Cody Meneley. Tattooing since 2004, sponsored artist, with a black and grey specialty.",
-  email: "codymeneley@gmail.com",
-  instagram: "https://www.instagram.com/cwaynetattoo/",
-  facebook: "https://www.facebook.com/profile.php?id=100090738856963",
+    "Sean E. Bones — award-winning tattoo artist with 25+ years of experience since 1999, trained under Troy \"Rabbit\" Fox. Internationally published, award winning art. Private studio in Mansfield, Texas — by appointment only.",
+  email: "seanebones@gmail.com",
+  instagram: "https://www.instagram.com/sean_e_bones_official/",
+  facebook: "https://www.facebook.com/profile.php?id=100090242529349",
   bookingUrl: process.env.NEXT_PUBLIC_BOOKING_URL ?? "",
-  siteUrl: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  siteUrl: normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL),
 };
 
 export const navItems = [

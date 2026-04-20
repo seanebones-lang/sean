@@ -19,7 +19,7 @@ export default function LocaleError({ error, reset }: ErrorProps) {
     <div className="mx-auto w-full max-w-2xl px-4 py-16 text-center">
       <h1 className="section-title text-3xl text-foreground">Something went wrong</h1>
       <p className="mt-3 text-muted-foreground">
-        This page hit an unexpected error. It's been logged — you can try again or head home.
+        This page hit an unexpected error. It has been logged — you can try again or head home.
       </p>
       {error.digest ? (
         <p className="mt-2 text-xs text-muted-foreground">Reference: {error.digest}</p>
