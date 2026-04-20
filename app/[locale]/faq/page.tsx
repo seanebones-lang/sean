@@ -1,10 +1,26 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/page-shell";
 import { FaqAccordion } from "@/components/faq-accordion";
+import { siteConfig } from "@/lib/site";
 
 type FaqPageProps = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: FaqPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "FAQ",
+    description: "Common questions about booking, pricing, styles, consultation, and preparing for your tattoo appointment.",
+    alternates: { canonical: `${siteConfig.siteUrl}/${locale}/faq` },
+    openGraph: {
+      title: "FAQ — Cody Meneley Tattoo Artist",
+      description: "Booking, pricing, aftercare, cover-ups — quick answers to the questions we hear most.",
+      url: `${siteConfig.siteUrl}/${locale}/faq`,
+    },
+  };
+}
 
 const faqs = [
   {

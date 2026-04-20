@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 import { PageShell } from "@/components/page-shell";
@@ -6,11 +7,26 @@ import { sanityClient } from "@/sanity/lib/client";
 import { artistListQuery } from "@/sanity/lib/queries";
 import { sanityEnv } from "@/sanity/env";
 import { urlFor } from "@/sanity/lib/image";
+import { siteConfig } from "@/lib/site";
 import type { SanityImageSource } from "@sanity/image-url";
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "Artists",
+    description: "Meet the artists at the studio. Browse specialties, view portfolios, and check booking availability.",
+    alternates: { canonical: `${siteConfig.siteUrl}/${locale}/artists` },
+    openGraph: {
+      title: "Tattoo Artists — Cody Meneley Studio",
+      description: "Browse artists, their styles, specialties, and current booking availability.",
+      url: `${siteConfig.siteUrl}/${locale}/artists`,
+    },
+  };
+}
 
 type ArtistListItem = {
   _id: string;

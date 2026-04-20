@@ -1,10 +1,26 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/page-shell";
 import { Link } from "@/i18n/navigation";
+import { siteConfig } from "@/lib/site";
 
 type AboutPageProps = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: AboutPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "About Cody Meneley",
+    description: "Tattooing professionally since 2004. Sponsored artist specializing in black and grey realism, fine line, and custom illustrative work.",
+    alternates: { canonical: `${siteConfig.siteUrl}/${locale}/about` },
+    openGraph: {
+      title: "About Cody Meneley",
+      description: "20+ years of professional tattooing. Sponsored artist, black and grey specialist, custom designs.",
+      url: `${siteConfig.siteUrl}/${locale}/about`,
+    },
+  };
+}
 
 const stats = [
   { value: "20+", label: "Years tattooing" },

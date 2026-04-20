@@ -1,10 +1,26 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/page-shell";
 import { Link } from "@/i18n/navigation";
+import { siteConfig } from "@/lib/site";
 
 type PoliciesPageProps = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: PoliciesPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "Studio Policies",
+    description: "Booking policies covering deposits, cancellations, pricing, health requirements, and touch-up coverage.",
+    alternates: { canonical: `${siteConfig.siteUrl}/${locale}/policies` },
+    openGraph: {
+      title: "Studio Policies — Cody Meneley",
+      description: "Deposit, cancellation, and studio policies. Read before booking your appointment.",
+      url: `${siteConfig.siteUrl}/${locale}/policies`,
+    },
+  };
+}
 
 const sections = [
   {

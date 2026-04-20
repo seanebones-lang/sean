@@ -1,13 +1,29 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/page-shell";
 import { getAftercarePage } from "@/lib/sanity/aftercare";
 import { PrintButton } from "./print-button";
+import { siteConfig } from "@/lib/site";
 
 type AftercarePageProps = {
   params: Promise<{ locale: string }>;
 };
 
 export const revalidate = 300;
+
+export async function generateMetadata({ params }: AftercarePageProps): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "Aftercare Guide",
+    description: "Step-by-step tattoo aftercare instructions. How to wash, moisturize, and protect your tattoo for the best healed result.",
+    alternates: { canonical: `${siteConfig.siteUrl}/${locale}/aftercare` },
+    openGraph: {
+      title: "Tattoo Aftercare Guide — Cody Meneley",
+      description: "Take-home aftercare steps to keep your tattoo healing cleanly. Printable format included.",
+      url: `${siteConfig.siteUrl}/${locale}/aftercare`,
+    },
+  };
+}
 
 const FALLBACK_STEPS = [
   {

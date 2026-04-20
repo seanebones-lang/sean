@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/page-shell";
 import { Link } from "@/i18n/navigation";
@@ -9,6 +10,20 @@ type TestimonialsPageProps = {
 };
 
 export const revalidate = 120;
+
+export async function generateMetadata({ params }: TestimonialsPageProps): Promise<Metadata> {
+  const { locale } = await params;
+  return {
+    title: "Testimonials",
+    description: "What clients say about their experience with Cody Meneley — quality, process, and long-term results.",
+    alternates: { canonical: `${siteConfig.siteUrl}/${locale}/testimonials` },
+    openGraph: {
+      title: "Client Testimonials — Cody Meneley",
+      description: "Genuine client feedback on tattoo quality, the booking process, and healing results.",
+      url: `${siteConfig.siteUrl}/${locale}/testimonials`,
+    },
+  };
+}
 
 const fallbackTestimonials = [
   {
