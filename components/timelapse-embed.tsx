@@ -3,6 +3,15 @@ type TimelapseEmbedProps = {
   title: string;
 };
 
+function isSafeUrl(url: string): boolean {
+  try {
+    const { protocol } = new URL(url);
+    return protocol === "https:" || protocol === "http:";
+  } catch {
+    return false;
+  }
+}
+
 function toYouTubeEmbed(url: string): string | null {
   try {
     const parsed = new URL(url);
@@ -32,6 +41,7 @@ function toVimeoEmbed(url: string): string | null {
 }
 
 export function TimelapseEmbed({ url, title }: TimelapseEmbedProps) {
+  if (!isSafeUrl(url)) return null;
   const youtube = toYouTubeEmbed(url);
   const vimeo = toVimeoEmbed(url);
   const embed = youtube ?? vimeo;
