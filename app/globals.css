@@ -7,6 +7,7 @@
   --foreground: #f4f5f6;
   --muted-foreground: #b0b6c2;
   --electric: #21c7ff;
+  --electric-accessible: #5dd5ff; /* higher contrast on dark bg for small text */
   --electric-soft: rgba(33, 199, 255, 0.2);
   --border: rgba(255, 255, 255, 0.12);
 }
@@ -17,6 +18,7 @@
   --color-foreground: var(--foreground);
   --color-muted-foreground: var(--muted-foreground);
   --color-electric: var(--electric);
+  --color-electric-accessible: var(--electric-accessible);
   --color-electric-soft: var(--electric-soft);
   --color-border: var(--border);
   --font-sans: "Manrope", sans-serif;
@@ -70,6 +72,21 @@ a {
   border: 1px solid var(--border);
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.01));
   backdrop-filter: blur(2px);
+}
+
+@media print {
+  body {
+    background: #fff;
+    color: #111;
+  }
+  .layout-shell::before {
+    display: none;
+  }
+  nav,
+  footer,
+  .print\:hidden {
+    display: none !important;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

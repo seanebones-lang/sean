@@ -7,6 +7,7 @@ import { urlFor } from "@/sanity/lib/image";
 import { PortfolioPieceCard } from "@/components/portfolio-piece-card";
 import { BookingCta } from "@/components/booking-cta";
 import { ImageGallery } from "@/components/image-gallery";
+import { Breadcrumbs } from "@/components/breadcrumbs";
 import { getPortfolioPieceBySlug, getPortfolioPieceSlugs } from "./piece-data";
 
 type Props = {
@@ -95,14 +96,14 @@ export default async function PortfolioPiecePage({ params }: Props) {
       />
 
       <div className="mx-auto w-full max-w-6xl min-w-0 px-3 py-8 min-[480px]:px-4 min-[480px]:py-12 sm:px-6">
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
-          <Link href="/" className="hover:text-electric">Home</Link>
-          <span aria-hidden>/</span>
-          <Link href="/portfolio" className="hover:text-electric">Portfolio</Link>
-          <span aria-hidden>/</span>
-          <span className="text-foreground">{piece.title}</span>
-        </nav>
+        <Breadcrumbs
+          locale={locale}
+          items={[
+            { label: "Home", href: "/" },
+            { label: "Portfolio", href: "/portfolio" },
+            { label: piece.title },
+          ]}
+        />
 
         <div className="grid gap-10 lg:grid-cols-[1fr_22rem]">
           {/* Gallery */}

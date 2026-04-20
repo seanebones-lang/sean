@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { BeforeAfterSlider } from "./before-after-slider";
 
 type GalleryImage = {
   src: string;
@@ -19,12 +20,10 @@ type ImageGalleryProps = {
 export function ImageGallery({ images, healedUrl, title }: ImageGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [showHealed, setShowHealed] = useState(false);
+  const [compareMode, setCompareMode] = useState(false);
   const closeRef = useRef<HTMLButtonElement>(null);
 
-  const allImages = healedUrl
-    ? [...images, { src: healedUrl, thumb: healedUrl, alt: `${title} — healed` }]
-    : images;
+  const allImages = images;
 
   const prev = useCallback(() => {
     setActiveIndex((i) => (i === 0 ? allImages.length - 1 : i - 1));
@@ -71,42 +70,50 @@ export function ImageGallery({ images, healedUrl, title }: ImageGalleryProps) {
     <>
       {/* Main display */}
       <div className="space-y-3">
-        {/* Hero image */}
-        <button
-          type="button"
-          className="group relative block w-full cursor-zoom-in overflow-hidden rounded-xl bg-gradient-to-br from-surface to-black"
-          style={{ aspectRatio: "4/5" }}
-          onClick={() => setLightboxOpen(true)}
-          aria-label={`Enlarge image: ${active?.alt}`}
-        >
-          {active ? (
-            <Image
-              src={showHealed && healedUrl ? healedUrl : active.src}
-              alt={active.alt}
-              fill
-              className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-              sizes="(max-width: 1024px) 100vw, 60vw"
-              priority
-            />
-          ) : null}
-          <span className="absolute right-3 bottom-3 rounded-lg bg-black/60 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
-            Tap to enlarge
-          </span>
-        </button>
+        {/* Hero image / compare slider */}
+        {compareMode && healedUrl && active ? (
+          <BeforeAfterSlider
+            beforeSrc={active.src}
+            afterSrc={healedUrl}
+            alt={title}
+          />
+        ) : (
+          <button
+            type="button"
+            className="group relative block w-full cursor-zoom-in overflow-hidden rounded-xl bg-gradient-to-br from-surface to-black"
+            style={{ aspectRatio: "4/5" }}
+            onClick={() => setLightboxOpen(true)}
+            aria-label={`Enlarge image: ${active?.alt}`}
+          >
+            {active ? (
+              <Image
+                src={active.src}
+                alt={active.alt}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+                sizes="(max-width: 1024px) 100vw, 60vw"
+                priority
+              />
+            ) : null}
+            <span className="absolute right-3 bottom-3 rounded-lg bg-black/60 px-2 py-1 text-xs text-white opacity-0 transition-opacity group-hover:opacity-100">
+              Tap to enlarge
+            </span>
+          </button>
+        )}
 
-        {/* Healed toggle */}
+        {/* Before/after compare toggle */}
         {healedUrl ? (
           <button
             type="button"
-            onClick={() => setShowHealed((v) => !v)}
+            onClick={() => setCompareMode((v) => !v)}
             className={cn(
               "rounded-full border px-3 py-1.5 text-xs font-medium uppercase tracking-wider transition-colors",
-              showHealed
+              compareMode
                 ? "border-electric bg-electric/10 text-electric"
                 : "border-border text-muted-foreground hover:border-electric/60 hover:text-electric"
             )}
           >
-            {showHealed ? "Fresh" : "Healed"}
+            {compareMode ? "Hide comparison" : "Compare healed"}
           </button>
         ) : null}
 
