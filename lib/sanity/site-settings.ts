@@ -8,6 +8,7 @@ export type SiteSettings = {
   footerBio?: string | null;
   bookingUrl?: string | null;
   depositPaymentUrl?: string | null;
+  bookingStatus?: "open" | "waitlist" | "closed" | null;
   instagramUrl?: string | null;
   facebookUrl?: string | null;
   tiktokUrl?: string | null;

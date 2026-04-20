@@ -1,6 +1,13 @@
 import { getTranslations } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/lib/site";
 import { getSiteSettings } from "@/lib/sanity/site-settings";
+
+const STATUS_CONFIG = {
+  open: { label: "Booking open", dot: "bg-emerald-400" },
+  waitlist: { label: "Waitlist", dot: "bg-amber-400" },
+  closed: { label: "Closed", dot: "bg-red-400" },
+} as const;
 
 export async function SiteFooter() {
   const t = await getTranslations("common");
@@ -15,6 +22,8 @@ export async function SiteFooter() {
   const hours = settings?.businessHours?.trim();
   const address = settings?.studioAddress?.trim();
   const phone = settings?.phoneNumber?.trim();
+  const bookingStatus = settings?.bookingStatus ?? "open";
+  const statusConfig = STATUS_CONFIG[bookingStatus] ?? STATUS_CONFIG.open;
 
   return (
     <footer className="border-t border-border">
@@ -24,6 +33,15 @@ export async function SiteFooter() {
             {settings?.siteName?.trim() || siteConfig.name}
           </p>
           <p className="mt-2 max-w-md text-sm text-muted-foreground whitespace-pre-line">{bio}</p>
+
+          {/* Availability pill */}
+          <Link
+            href="/booking"
+            className="mt-4 inline-flex items-center gap-1.5 rounded-full border border-border px-3 py-1 text-xs text-muted-foreground hover:border-electric/40 hover:text-electric"
+          >
+            <span className={`inline-block h-2 w-2 rounded-full ${statusConfig.dot}`} aria-hidden />
+            {statusConfig.label}
+          </Link>
         </div>
 
         <div className="text-sm">
@@ -91,6 +109,7 @@ export async function SiteFooter() {
           <span>
             © {new Date().getFullYear()} {settings?.siteName?.trim() || siteConfig.name}. All rights reserved.
           </span>
+          <Link href="/policies" className="hover:text-electric">Policies</Link>
         </div>
       </div>
     </footer>

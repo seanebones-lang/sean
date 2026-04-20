@@ -1,6 +1,7 @@
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/page-shell";
 import { getBookingPortalUrls } from "./booking-portal";
+import { Link } from "@/i18n/navigation";
 
 export const revalidate = 60;
 
@@ -80,6 +81,45 @@ export default async function BookingPage({ params }: BookingPageProps) {
       {hasBooking && !hasDeposit ? (
         <p className="mt-6 max-w-2xl text-sm text-muted-foreground">{t("depositOptionalHint")}</p>
       ) : null}
+
+      {/* Trust signals */}
+      <div className="mt-10 grid gap-3 sm:grid-cols-3">
+        {[
+          { icon: "🔒", heading: "Secure & private", body: "Your personal details are never shared with third parties." },
+          { icon: "💬", heading: "No commitment yet", body: "Booking a consult is free — you approve the design before any deposit." },
+          { icon: "📋", heading: "Deposit policy", body: "Deposits are required to hold your appointment. See our policies for full details." },
+        ].map((item) => (
+          <div key={item.heading} className="section-card rounded-xl p-4 text-sm">
+            <p className="text-xl">{item.icon}</p>
+            <p className="mt-2 font-semibold text-foreground">{item.heading}</p>
+            <p className="mt-1 text-muted-foreground">{item.body}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Quick FAQ */}
+      <div className="mt-8">
+        <h2 className="section-title text-sm text-muted-foreground">Common questions</h2>
+        <dl className="mt-3 grid gap-3 sm:grid-cols-2">
+          {[
+            { q: "How much does a tattoo cost?", a: "Pricing depends on size, complexity, and placement. Minimum is $100. Custom pieces are quoted after your consultation." },
+            { q: "How big is the deposit?", a: "Deposits are typically $50–$200 depending on project scope. This is deducted from your final session price." },
+            { q: "Can I get a custom design?", a: "Yes — all custom work is discussed at consultation. You'll see the design before we book your session." },
+            { q: "What should I bring?", a: "Arrive clean, hydrated, and having eaten. Wear or bring loose clothing that gives access to the tattoo area." },
+          ].map((item) => (
+            <div key={item.q} className="section-card rounded-xl p-4">
+              <dt className="text-sm font-semibold text-foreground">{item.q}</dt>
+              <dd className="mt-1 text-sm text-muted-foreground">{item.a}</dd>
+            </div>
+          ))}
+        </dl>
+        <p className="mt-4 text-xs text-muted-foreground">
+          More questions?{" "}
+          <Link href="/faq" className="text-electric hover:underline">Read the full FAQ</Link>
+          {" or "}
+          <Link href="/contact" className="text-electric hover:underline">contact us directly</Link>.
+        </p>
+      </div>
     </PageShell>
   );
 }

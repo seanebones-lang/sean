@@ -30,6 +30,20 @@ export const siteSettingsType = defineType({
     defineField({ name: "instagramUrl", title: "Instagram URL", type: "url" }),
     defineField({ name: "facebookUrl", title: "Facebook URL", type: "url" }),
     defineField({ name: "tiktokUrl", title: "TikTok URL", type: "url" }),
+    defineField({
+      name: "bookingStatus",
+      title: "Booking status",
+      type: "string",
+      options: {
+        list: [
+          { title: "Open — accepting new clients", value: "open" },
+          { title: "Waitlist — join the waitlist", value: "waitlist" },
+          { title: "Closed — not accepting bookings", value: "closed" },
+        ],
+        layout: "radio",
+      },
+      initialValue: "open",
+    }),
     defineField({ name: "contactEmail", title: "Contact Email", type: "string" }),
     defineField({ name: "phoneNumber", title: "Phone Number", type: "string" }),
     defineField({

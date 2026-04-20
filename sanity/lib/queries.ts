@@ -7,6 +7,7 @@ export const siteSettingsQuery = groq`
     footerBio,
     bookingUrl,
     depositPaymentUrl,
+    bookingStatus,
     instagramUrl,
     facebookUrl,
     tiktokUrl,
