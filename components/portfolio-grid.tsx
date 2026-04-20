@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useMemo, useCallback } from "react";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { PortfolioPieceCard } from "./portfolio-piece-card";
 import { cn } from "@/lib/utils";
@@ -11,7 +12,24 @@ type PortfolioGridProps = {
 };
 
 export function PortfolioGrid({ pieces }: PortfolioGridProps) {
-  const [activeTag, setActiveTag] = useState<string>("all");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const activeTag = searchParams.get("style") ?? "all";
+
+  const setActiveTag = useCallback(
+    (tag: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (tag === "all") {
+        params.delete("style");
+      } else {
+        params.set("style", tag);
+      }
+      const qs = params.toString();
+      router.replace(`${pathname}${qs ? `?${qs}` : ""}`, { scroll: false });
+    },
+    [router, pathname, searchParams]
+  );
 
   const allTags = useMemo(() => {
     const tagSet = new Set<string>();

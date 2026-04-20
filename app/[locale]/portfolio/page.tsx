@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { setRequestLocale } from "next-intl/server";
 import { PageShell } from "@/components/page-shell";
 import { PortfolioGrid } from "@/components/portfolio-grid";
@@ -59,7 +60,9 @@ export default async function PortfolioPage({ params }: PortfolioPageProps) {
       ) : null}
 
       {pieces.length ? (
-        <PortfolioGrid pieces={pieces} />
+        <Suspense fallback={<div className="h-8 animate-pulse rounded-full bg-surface" />}>
+          <PortfolioGrid pieces={pieces} />
+        </Suspense>
       ) : !fetchError ? (
         <p className="max-w-xl text-sm text-muted-foreground">
           {sanityEnv.isConfigured
